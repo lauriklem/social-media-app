@@ -15,7 +15,7 @@ In the application, user can
 The application consists of three parts:
 
 1. *Client* is a single-page application developed using React.
-2. *Server* developed using Node.js and REST.
+2. *Server* developed using Node.js and Express.
 3. *Database* is a MariaDB database.
 
 ## Authors
@@ -24,4 +24,4 @@ Lauri Klemettinen
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE file for details
