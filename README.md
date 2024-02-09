@@ -14,8 +14,8 @@ In the application, user can
 ## Project structure
 The application consists of three parts:
 
-1. *Client* is a single-page application developed using React.
-2. *Server* developed using Node.js and Express.
+1. *Client* is a single-page application that is developed using React.
+2. *Server* is developed using Node.js and Express.
 3. *Database* is a MariaDB database.
 
 ## Authors
