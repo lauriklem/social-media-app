@@ -94,4 +94,3 @@ SELECT * FROM content_type;
 SELECT * FROM post;
 SELECT * FROM content_of_post;
 SELECT * FROM comment_of_post;
-

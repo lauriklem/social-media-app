@@ -19,11 +19,13 @@ app.use((req, res, next) => {
 });
 
 // Routes
-/*
-All the routes will be here
-*/
+const userRoutes = require('./routes/user-routes.js');
+app.use(userRoutes);
+
 
 // Start server
-app.listen(port, hostname, () => {
+const server = app.listen(port, hostname, () => {
     console.log(`Server for social-media-app is running at http://${hostname}:${port}/`);
 });
+
+module.exports = server;
