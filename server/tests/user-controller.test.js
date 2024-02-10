@@ -9,19 +9,19 @@ afterAll(() => {
 })
 
 // Adding user
-test('Adds user to db', async () => {
+test('Adding user to db', async () => {
     const response = await request(app).post(url).send(user1);
     expect(response.statusCode).toBe(201);
     expect(response.body.success).toBe(true);
 });
 
-test('Try adding user that exists', async () => {
+test('Trying to add user that exists', async () => {
     const response = await request(app).post(url).send(user1);
     expect(response.statusCode).toBe(500);
     expect(response.body.success).toBe(false);
 });
 
-test('Try adding with empty body', async () => {
+test('Trying to add with empty body', async () => {
     const response = await request(app).post(url).send({});
     expect(response.statusCode).toBe(400);
     expect(response.body.success).toBe(false);
@@ -29,13 +29,13 @@ test('Try adding with empty body', async () => {
 
 
 // Finding user
-test('Finds user in db', async () => {
+test('Finding user in db', async () => {
     const response = await request(app).get(url + '/testuser1235');
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
 });
 
-test('Tries to find user not in db', async () => {
+test('Trying to find user not in db', async () => {
     const response = await request(app).get(url + '/testuser9876');
     expect(response.statusCode).toBe(404);
     expect(response.body.success).toBe(false);
@@ -75,3 +75,14 @@ test('Updating password', async () => {
 
 
 // Deleting user
+test('Deleting user in db', async () => {
+    const response = await request(app).delete(url + '/testuser6543');
+    expect(response.statusCode).toBe(200);
+    expect(response.body.success).toBe(true);
+});
+
+test('Tries to delete user not in db', async () => {
+    const response = await request(app).get(url + '/testuser6543');
+    expect(response.statusCode).toBe(404);
+    expect(response.body.success).toBe(false);
+});

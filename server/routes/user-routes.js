@@ -9,6 +9,6 @@ router.route('/users')
 
 router.route('/users/:username')
     .get(ctrl.findUser)
-
+    .delete(ctrl.deleteUser)
 
 module.exports = router;

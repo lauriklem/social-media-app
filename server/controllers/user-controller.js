@@ -29,7 +29,7 @@ async function addUser(req, res) {
         } else {
             const q = 'INSERT INTO app_user(username, pwd) VALUES (?, ?)';
             const [result, fields] = await pool.execute(q, [username, password]);
-            if (result.affectedRows === 1) {
+            if (result.affectedRows >= 1) {
                 res.status(201).json({ success: true, message: "User added successfully" });
             } else {
                 res.status(500).json({ success: false, message: "Error adding user" });
@@ -50,23 +50,23 @@ async function updateUser(req, res) {
         if (!(oldUsername && (newUsername || newPassword))) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
-            // If password is given, update it
-            if (newPassword) {
-                const q = 'UPDATE app_user SET pwd = ? WHERE username = ?';
-                const [result, fields] = await pool.execute(q, [newPassword, oldUsername]);
-                if (result.affectedRows === 1) {
-                    res.status(200).json({ success: true, message: "User updated successfully" });
-                } else {
-                    res.status(500).json({ success: false, message: "Error updating user" });
-                }
+            let q, updateArray;
+            if (newPassword && newUsername) {
+                q = 'UPDATE app_user SET username = ?, pwd = ? WHERE username = ?';
+                updateArray = [newUsername, newPassword, oldUsername];
+            } else if (newPassword) {
+                q = 'UPDATE app_user SET pwd = ? WHERE username = ?';
+                updateArray = [newPassword, oldUsername];
             } else {
-                const q = 'UPDATE app_user SET username = ? WHERE username = ?';
-                const [result, fields] = await pool.execute(q, [newUsername, oldUsername]);
-                if (result.affectedRows === 1) {
-                    res.status(200).json({ success: true, message: "User updated successfully" });
-                } else {
-                    res.status(500).json({ success: false, message: "Error updating user" });
-                }
+                q = 'UPDATE app_user SET username = ? WHERE username = ?';
+                updateArray = [newUsername, oldUsername];
+            }
+
+            const [result, fields] = await pool.execute(q, updateArray)
+            if (result.affectedRows >= 1) {
+                res.status(200).json({ success: true, message: "User updated successfully" });
+            } else {
+                res.status(500).json({ success: false, message: "Error updating user" });
             }
         }
     } catch (err) {
@@ -75,8 +75,30 @@ async function updateUser(req, res) {
     }
 };
 
+async function deleteUser(req, res) {
+    try {
+        const username = req.params.username
+
+        if (username === "") {
+            res.status(400).json({ success: false, message: "Check input" });
+        } else {
+            const q = 'DELETE FROM app_user WHERE username = ?';
+            const [result, fields] = await pool.execute(q, [username]);
+            if (result.affectedRows >= 1) {
+                res.status(200).json({ success: true, message: "Deleted user" });
+            } else {
+                res.status(404).json({ success: false, message: "Did not find user" });
+            }
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ success: false, message: "Error deleting user" });
+    }
+};
+
 module.exports = {
     findUser: findUser,
     addUser: addUser,
     updateUser: updateUser,
+    deleteUser: deleteUser,
 };
