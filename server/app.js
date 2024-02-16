@@ -22,6 +22,8 @@ app.use((req, res, next) => {
 const userRoutes = require('./routes/user-routes.js');
 app.use(userRoutes);
 
+const loginRoutes = require('./routes/login-routes.js');
+app.use(loginRoutes);
 
 // Start server
 const server = app.listen(port, hostname, () => {

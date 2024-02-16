@@ -1,9 +1,10 @@
 const pool = require('./connection.js');
+const bcrypt = require('bcrypt');
 
 async function findUser(req, res) {
     try {
         const username = req.params.username;
-        if (username === "") {
+        if (!username || username.length === 0) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
             const q = 'SELECT username FROM app_user WHERE username = ?';
@@ -24,11 +25,12 @@ async function addUser(req, res) {
     try {
         const username = req.body.username;
         const password = req.body.password;
-        if (!username || !password) {
+        if (!username || !password || username.length === 0 || password.length === 0) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
+            const hashedpw = await bcrypt.hash(password, 10);
             const q = 'INSERT INTO app_user(username, pwd) VALUES (?, ?)';
-            const [result, fields] = await pool.execute(q, [username, password]);
+            const [result, fields] = await pool.execute(q, [username, hashedpw]);
             if (result.affectedRows >= 1) {
                 res.status(201).json({ success: true, message: "User added successfully" });
             } else {
@@ -47,16 +49,18 @@ async function updateUser(req, res) {
         const newUsername = req.body.newUsername;
         const newPassword = req.body.newPassword;
 
-        if (!(oldUsername && (newUsername || newPassword))) {
+        if (!(oldUsername && (newUsername || newPassword)) || oldUsername.length === 0 || (newUsername && newUsername.length === 0) || (newPassword && newPassword.length === 0)) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
             let q, updateArray;
             if (newPassword && newUsername) {
+                const hashedpw = await bcrypt.hash(newPassword, 10);
                 q = 'UPDATE app_user SET username = ?, pwd = ? WHERE username = ?';
-                updateArray = [newUsername, newPassword, oldUsername];
+                updateArray = [newUsername, hashedpw, oldUsername];
             } else if (newPassword) {
+                const hashedpw = await bcrypt.hash(newPassword, 10);
                 q = 'UPDATE app_user SET pwd = ? WHERE username = ?';
-                updateArray = [newPassword, oldUsername];
+                updateArray = [hashedpw, oldUsername];
             } else {
                 q = 'UPDATE app_user SET username = ? WHERE username = ?';
                 updateArray = [newUsername, oldUsername];
@@ -79,7 +83,7 @@ async function deleteUser(req, res) {
     try {
         const username = req.params.username
 
-        if (username === "") {
+        if (!username || username.length === 0) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
             const q = 'DELETE FROM app_user WHERE username = ?';

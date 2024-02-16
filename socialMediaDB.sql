@@ -5,7 +5,7 @@ USE social_media_schema;
 -- Create tables
 CREATE TABLE app_user(
 username VARCHAR(20) PRIMARY KEY,
-pwd VARCHAR(20) NOT NULL
+pwd TEXT NOT NULL
 );
 
 CREATE TABLE post(
