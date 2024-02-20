@@ -1,5 +1,7 @@
 const pool = require('./connection.js');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const secret = require('../utils/secret.json');
 
 async function loginUser(req, res) {
     try {
@@ -10,11 +12,12 @@ async function loginUser(req, res) {
         } else {
             const q = 'SELECT username, pwd FROM app_user WHERE username = ?';
             const [result, fields] = await pool.execute(q, [username]);
-            if (result[0]) { 
-                const hashedpw = result[0].pwd;
-                const match = await bcrypt.compare(password, hashedpw);
+            if (result[0]) {
+                const match = await bcrypt.compare(password, result[0].pwd);
                 if (match) {
-                    res.status(200).json({ success: true, message: "Login successful" });
+                    const payload = result[0].username + Date.now();
+                    const token = jwt.sign({ payload }, secret.secret, { expiresIn: '1h' });
+                    res.status(200).json({ success: true, message: "Login successful", token: token });
                 } else {
                     res.status(401).json({ success: false, message: "Wrong username or password" });
                 }

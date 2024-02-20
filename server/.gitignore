@@ -131,3 +131,4 @@ dist
 
 # Misc
 database/db-config.json
+utils/secret.json

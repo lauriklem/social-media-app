@@ -4,6 +4,7 @@ const request = require('supertest');
 const userUrl = '/users';
 const loginUlr = '/login';
 const user1 = { username: 'testuser1235', password: 'testpassword1235' };
+let auth = '';
 
 afterAll(() => {
     app.close();
@@ -19,6 +20,8 @@ test('Logging in with the added user', async () => {
     const response = await request(app).post(loginUlr).send(user1);
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
+    expect(response.body.token.length > 0).toBe(true);
+    auth = "Bearer " + response.body.token;
 });
 
 test('Trying to log in with wrong password', async () => {
@@ -40,7 +43,8 @@ test('Trying to log in with empty body', async () => {
 });
 
 test('Deleting added user', async () => {
-    const response = await request(app).delete(userUrl + '/testuser1235');
+    const response = await request(app).delete(userUrl + '/testuser1235')
+    .set({ Authorization: auth});
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
 });

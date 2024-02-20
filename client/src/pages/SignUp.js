@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FormWrapper, Form, InfoLabel, FormButton } from './SignUp.styles';
-import { MainContent, Input, InputLabel } from 'components';
+import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton } from 'components';
 import { url as serverUrl } from 'connection';
-import { validatePassword, validateUsername } from 'utils/validateUserInfo';
+import { validatePassword, validateUsername, checkNameAvailable } from 'utils/validateUserInfo';
 
 export default function SignUp() {
     const navigate = useNavigate();
@@ -51,11 +50,24 @@ export default function SignUp() {
     };
 
     useEffect(() => {
+        async function checkAvailability() {
+            try {
+                const available = await checkNameAvailable(username);
+                if (available) {
+                    setUsernameInfo("");
+                } else {
+                    setUsernameInfo("Username is already in use");
+                }
+            } catch (err) {
+                setUsernameInfo("Error checking username availability");
+            }
+        }
+
         if (usernameInputVisited) {
             const validstr = validateUsername(username);
 
             if (validstr === "") {
-                setUsernameInfo("");
+                checkAvailability();
             } else {
                 setUsernameInfo("Username doesn't fulfill the following requirements:\n" + validstr);
             }
@@ -98,7 +110,7 @@ export default function SignUp() {
                 const result = await fetch(serverUrl + "users", requestOptions);
                 const response = await result.json();
                 if (response.success) {
-                    navigate('/');
+                    navigate('/signin');
                 }
                 else {
                     setErrorInfo("Something went wrong while creating an account");

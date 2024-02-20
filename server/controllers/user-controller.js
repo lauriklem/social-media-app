@@ -65,7 +65,6 @@ async function updateUser(req, res) {
                 q = 'UPDATE app_user SET username = ? WHERE username = ?';
                 updateArray = [newUsername, oldUsername];
             }
-
             const [result, fields] = await pool.execute(q, updateArray)
             if (result.affectedRows >= 1) {
                 res.status(200).json({ success: true, message: "User updated successfully" });

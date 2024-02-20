@@ -1,3 +1,5 @@
+import { url as serverUrl } from 'connection';
+
 export const validatePassword = (password) => {
         let length = "";
         let capital = "";
@@ -32,4 +34,21 @@ export const validateUsername = (username) => {
     }
 
     return length + pattern;
+}
+
+export const checkNameAvailable = async (username) => {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    };
+
+    try {
+        const result = await fetch(serverUrl + `users/${username}`, requestOptions);
+        const response = await result.json();
+        console.log(response);
+        return !response.success;
+    } catch (err) {
+        console.log("Error while checking username availability");
+        return false;
+    }
 }
