@@ -45,7 +45,6 @@ export const checkNameAvailable = async (username) => {
     try {
         const result = await fetch(serverUrl + `users/${username}`, requestOptions);
         const response = await result.json();
-        console.log(response);
         return !response.success;
     } catch (err) {
         console.log("Error while checking username availability");

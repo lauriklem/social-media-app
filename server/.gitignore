@@ -129,6 +129,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Fonts
+*.woff
+
 # Misc
 database/db-config.json
 utils/secret.json

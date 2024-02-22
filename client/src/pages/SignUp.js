@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton } from 'components';
+import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title } from 'components';
 import { url as serverUrl } from 'connection';
 import { validatePassword, validateUsername, checkNameAvailable } from 'utils/validateUserInfo';
 
@@ -24,6 +24,7 @@ export default function SignUp() {
 
     // Creating account
     const [creating, setCreating] = useState(false);
+    const [created, setCreated] = useState(false);
 
     const handleUsername = (e) => {
         setUsername(e.target.value);
@@ -49,25 +50,24 @@ export default function SignUp() {
         setPwConfInputVisited(true);
     };
 
-    useEffect(() => {
-        async function checkAvailability() {
-            try {
-                const available = await checkNameAvailable(username);
-                if (available) {
-                    setUsernameInfo("");
-                } else {
-                    setUsernameInfo("Username is already in use");
-                }
-            } catch (err) {
-                setUsernameInfo("Error checking username availability");
+    const handleUsernameBlur = async () => {
+        try {
+            const available = await checkNameAvailable(username);
+            if (available) {
+                setUsernameInfo("");
+            } else {
+                setUsernameInfo("Username is already in use");
             }
+        } catch (err) {
+            setUsernameInfo("Error checking username availability");
         }
+    };
 
+    useEffect(() => {
         if (usernameInputVisited) {
             const validstr = validateUsername(username);
-
             if (validstr === "") {
-                checkAvailability();
+                setUsernameInfo("");
             } else {
                 setUsernameInfo("Username doesn't fulfill the following requirements:\n" + validstr);
             }
@@ -110,7 +110,10 @@ export default function SignUp() {
                 const result = await fetch(serverUrl + "users", requestOptions);
                 const response = await result.json();
                 if (response.success) {
-                    navigate('/signin');
+                    setCreated(true);
+                    setTimeout(() => {
+                        navigate('/signin');
+                    }, 5000);
                 }
                 else {
                     setErrorInfo("Something went wrong while creating an account");
@@ -125,50 +128,51 @@ export default function SignUp() {
 
     return (
         <MainContent>
+            <Title>Create account</Title>
             <FormWrapper>
-                {
-                creating ? <InputLabel>Creating account...</InputLabel> :
-                    <Form action='' onSubmit={handleSubmit}>
-                        <InputLabel htmlFor='username'>Username</InputLabel>
-                        <Input type='text'
-                            name='username'
-                            id='username'
-                            required
-                            value={username}
-                            onChange={handleUsername}
-                            onFocus={handleUsernameFocus}
-                            maxLength="15"
-                        />
-                        {usernameInfo.length > 0 ? <InfoLabel>{usernameInfo}</InfoLabel> : null}
+                {created ? <InputLabel>Account created, you are now redirected to sign in.</InputLabel> :
+                    creating ? <InputLabel>Creating account...</InputLabel> :
+                        <Form action='' onSubmit={handleSubmit}>
+                            <InputLabel htmlFor='username'>Username</InputLabel>
+                            <Input type='text'
+                                name='username'
+                                id='username'
+                                required
+                                value={username}
+                                onChange={handleUsername}
+                                onFocus={handleUsernameFocus}
+                                onBlur={handleUsernameBlur}
+                                maxLength="15"
+                            />
+                            {usernameInfo.length > 0 ? <InfoLabel>{usernameInfo}</InfoLabel> : null}
 
-                        <InputLabel htmlFor='password'>Password</InputLabel>
-                        <Input type='password'
-                            name='password'
-                            id='password'
-                            required
-                            value={password}
-                            onChange={handlePassword}
-                            onFocus={handlePwFocus}
-                            maxLength="20"
-                        />
-                        {pwInfo.length > 0 ? <InfoLabel>{pwInfo}</InfoLabel> : null}
+                            <InputLabel htmlFor='password'>Password</InputLabel>
+                            <Input type='password'
+                                name='password'
+                                id='password'
+                                required
+                                value={password}
+                                onChange={handlePassword}
+                                onFocus={handlePwFocus}
+                                maxLength="20"
+                            />
+                            {pwInfo.length > 0 ? <InfoLabel>{pwInfo}</InfoLabel> : null}
 
-                        <InputLabel htmlFor='passwordConf'>Confirm password</InputLabel>
-                        <Input
-                            type='password'
-                            name='passwordConf'
-                            id='passwordConf'
-                            required
-                            value={passwordConf}
-                            onChange={handlePasswordConf}
-                            onFocus={handlePwConfFocus}
-                            maxLength="20"
-                        />
-                        {pwConfInfo.length > 0 ? <InfoLabel>{pwConfInfo}</InfoLabel> : null}
+                            <InputLabel htmlFor='passwordConf'>Confirm password</InputLabel>
+                            <Input type='password'
+                                name='passwordConf'
+                                id='passwordConf'
+                                required
+                                value={passwordConf}
+                                onChange={handlePasswordConf}
+                                onFocus={handlePwConfFocus}
+                                maxLength="20"
+                            />
+                            {pwConfInfo.length > 0 ? <InfoLabel>{pwConfInfo}</InfoLabel> : null}
 
-                        <FormButton type='submit' >Sign up</FormButton>
-                        {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
-                    </Form>
+                            <FormButton type='submit' >Sign up</FormButton>
+                            {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
+                        </Form>
                 }
             </FormWrapper>
         </MainContent>

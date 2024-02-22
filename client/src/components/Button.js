@@ -1,10 +1,10 @@
 import styled from "styled-components";
+import colors from 'styles/colors';
 
 export const Button = styled.button`
-    align-self: center;
-	padding: 1rem 1rem;
-	border: none;
-	cursor: pointer;
-	font-size: medium;
-	margin: 10px;
+	padding: 16px;
+	font-size: large;
+	margin: 0 0 8px 0;
+	background: ${colors.tertiary};
+	color: white;
 `;

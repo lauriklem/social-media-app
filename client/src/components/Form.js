@@ -21,5 +21,5 @@ export const InfoLabel = styled.label`
 `;
 
 export const FormButton = styled(Button)`
-    margin: 0 auto 0 0;
+
 `;
