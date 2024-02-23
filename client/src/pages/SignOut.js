@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
-import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title } from 'components';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MainContent, InputLabel, FormWrapper, Form, FormButton, Title } from 'components';
 
-export default function SignOut() {
+export default function SignOut(props) {
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        props.deleteLoginToken();
+        navigate('/');
+    };
+
     return (
         <MainContent>
             <Title>Sign out</Title>
             <FormWrapper>
                 <Form action='' onSubmit={handleSubmit}>
-                    <InputLabel htmlFor=''>Are you sure you want to sign out?</InputLabel>
-                    <FormButton type='submit' >Sign out</FormButton>
+                    <InputLabel>Are you sure you want to sign out?</InputLabel>
+                    <FormButton type='submit'>Sign out</FormButton>
                 </Form>
             </FormWrapper>
         </MainContent>

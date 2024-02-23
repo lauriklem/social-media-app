@@ -2,6 +2,6 @@ import React from "react";
 
 export default function Home() {
     return (
-        <h1>This is the home page of the app</h1>
+        <h1>This is the home page</h1>
     );
 }

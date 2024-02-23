@@ -11,6 +11,9 @@
 # production
 /build
 
+# Fonts
+*.woff
+
 # misc
 .DS_Store
 .env.local

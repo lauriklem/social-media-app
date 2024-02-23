@@ -36,7 +36,7 @@ export default function SignIn(props) {
                 const result = await fetch(serverUrl + "login", requestOptions);
                 const response = await result.json();
                 if (response.success) {
-                    props.setCookie('login-token', response.token, { sameSite: "lax" });
+                    props.setLoginToken(response.token);
                     navigate('/');
                 } else {
                     setErrorInfo("Incorrect username or password");
@@ -74,7 +74,7 @@ export default function SignIn(props) {
                             onChange={handlePassword}
                             maxLength="20"
                         />
-                        <FormButton type='submit' >Sign in</FormButton>
+                        <FormButton type='submit'>Sign in</FormButton>
                         {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
                     </Form>
                 }
