@@ -54,6 +54,7 @@ REFERENCES content_type(ctype)
 ON UPDATE CASCADE
 );
 
+/*
 -- Add test data
 INSERT INTO app_user(username, pwd) VALUES
 ('User1', 'password123'),
@@ -94,3 +95,4 @@ SELECT * FROM content_type;
 SELECT * FROM post;
 SELECT * FROM content_of_post;
 SELECT * FROM comment_of_post;
+*/
