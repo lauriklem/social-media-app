@@ -41,6 +41,6 @@ jobs:
     - run: | 
           npm ci
           npm run build --if-present
-          mysql --protocol=tcp -h "%secrets.DB_HOST" --port "%secrets.DB_PORT" -uroot -p"%secrets.DB_PASSWORD" -e "$(cat $(find ./ -name socialMediaDB.sql))"
+          mysql --protocol=tcp -h "$DB_HOST" --port "$DB_PORT" -uroot -p"$DB_PASSWORD" -e "$(cat $(find ./ -name socialMediaDB.sql))"
           npm test
           
