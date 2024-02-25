@@ -25,15 +25,12 @@ jobs:
         
     steps:
     - uses: actions/checkout@v4
-    - name: Build server
+    - name: Build server and db, and run tests
       uses: actions/setup-node@v4
       with:
         node-version: '20.x'
         cache: 'npm'
         cache-dependency-path: ./server/package-lock.json
-    - run: npm ci
-    - run: npm run build --if-present
-    - name: Run tests
       env: 
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
@@ -41,4 +38,9 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_NAME: ${{ secrets.DB_NAME }}
         AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-      run: npm test
+    - run: | 
+          npm ci
+          npm run build --if-present
+          mysql --protocol=tcp -h "%secrets.DB_HOST" --port "%secrets.DB_PORT" -uroot -p"%secrets.DB_PASSWORD" -e "$(cat $(find ./ -name socialMediaDB.sql))"
+          npm test
+          
