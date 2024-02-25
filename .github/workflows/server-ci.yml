@@ -16,7 +16,6 @@ jobs:
           - 3306:3306
         env:
           MARIADB_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MARIADB_DATABASE: ${{ secrets.DB_NAME }}
         options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
         
     defaults:
@@ -39,6 +38,6 @@ jobs:
         DB_NAME: ${{ secrets.DB_NAME }}
         AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
     - run: | 
-          cat $(find ./ -name socialMediaDB.sql) | mysql --protocol=tcp -u "$DB_USER" -p"$DB_PASSWORD" -h localhost -P 3306
+          cat $(find ../ -name socialMediaDB.sql) | mysql --protocol=tcp -u "$DB_USER" -p"$DB_PASSWORD" -h localhost -P 3306
           npm test
           
