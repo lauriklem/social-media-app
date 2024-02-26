@@ -1,5 +1,6 @@
 const pool = require('./connection.js');
 const bcrypt = require('bcrypt');
+const auth = require('../utils/authorization.js');
 
 async function findUser(req, res) {
     try {
@@ -49,8 +50,12 @@ async function updateUser(req, res) {
         const newUsername = req.body.newUsername;
         const newPassword = req.body.newPassword;
 
+        const usersMatch = auth.checkUsername(req, oldUsername);
+
         if (!(oldUsername && (newUsername || newPassword)) || oldUsername.length === 0 || (newUsername && newUsername.length === 0) || (newPassword && newPassword.length === 0)) {
             res.status(400).json({ success: false, message: "Check input" });
+        } else if (!usersMatch) {
+            res.status(401).json({ success: false, message: "Unauthorized access" });
         } else {
             let q, updateArray;
             if (newPassword && newUsername) {
@@ -67,7 +72,8 @@ async function updateUser(req, res) {
             }
             const [result, fields] = await pool.execute(q, updateArray)
             if (result.affectedRows >= 1) {
-                res.status(200).json({ success: true, message: "User updated successfully" });
+                const token = auth.generateToken(newUsername);
+                res.status(200).json({ success: true, message: "User updated successfully", token: token });
             } else {
                 res.status(500).json({ success: false, message: "Error updating user" });
             }
@@ -81,9 +87,12 @@ async function updateUser(req, res) {
 async function deleteUser(req, res) {
     try {
         const username = req.params.username
+        const usersMatch = auth.checkUsername(req, username);
 
         if (!username || username.length === 0) {
             res.status(400).json({ success: false, message: "Check input" });
+        } else if (!usersMatch) {
+            res.status(401).json({ success: false, message: "Unauthorized access" });
         } else {
             const q = 'DELETE FROM app_user WHERE username = ?';
             const [result, fields] = await pool.execute(q, [username]);

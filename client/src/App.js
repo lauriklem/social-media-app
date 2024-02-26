@@ -1,5 +1,5 @@
 import React from 'react';
-import { Welcome, SignUp, NoPage, SignIn, Home, SignOut, Profile } from 'pages';
+import { Welcome, SignUp, NoPage, SignIn, Home, SignOut, Profile, SignOutSuccess } from 'pages';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { NavbarLogin, NavbarApp } from 'components';
@@ -34,6 +34,7 @@ function App() {
           <Route path='/' element={<Welcome />} />
           <Route path='signup' element={<SignUp />} />
           <Route path='signin' element={<SignIn setLoginToken={setLoginToken} />} />
+          <Route path='signoutsuccess' element={<SignOutSuccess />} />
           <Route path='*' element={<NoPage />} />
         </Routes>
       </BrowserRouter>

@@ -1,10 +1,11 @@
 import React from 'react';
 import { MainContent, Title } from 'components';
 
-export default function NoPage() {
+export default function SignOutSuccess() {
+
     return (
         <MainContent>
-            <Title>Page not found.</Title>
+            <Title>You have been signed out.</Title>
         </MainContent>
     );
 }

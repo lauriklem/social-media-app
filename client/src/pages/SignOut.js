@@ -8,7 +8,7 @@ export default function SignOut(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         props.deleteLoginToken();
-        navigate('/');
+        navigate('/signoutsuccess');
     };
 
     return (

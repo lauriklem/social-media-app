@@ -59,13 +59,14 @@ test('Updating username', async () => {
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
+    auth = "Bearer " + response.body.token;
 });
 
-test('Trying to update username not in db', async () => {
+test('Trying to update username that doesnt match to token', async () => {
     const response = await request(app, { "Authorization": auth }).put(userUrl)
-        .send({ oldUsername: 'testuser9876', newUsername: 'testuser0000' })
+        .send({ oldUsername: 'testuser1235', newUsername: 'testuser0000' })
         .set({ Authorization: auth });
-    expect(response.statusCode).toBe(500);
+    expect(response.statusCode).toBe(401);
     expect(response.body.success).toBe(false);
 });
 

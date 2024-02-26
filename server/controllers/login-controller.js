@@ -1,6 +1,6 @@
 const pool = require('./connection.js');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const auth = require('../utils/authorization.js');
 require('dotenv').config();
 
 async function loginUser(req, res) {
@@ -15,8 +15,7 @@ async function loginUser(req, res) {
             if (result[0]) {
                 const match = await bcrypt.compare(password, result[0].pwd);
                 if (match) {
-                    const payload = result[0].username + Date.now();
-                    const token = jwt.sign({ payload }, process.env.AUTH_SECRET, { expiresIn: '1h' });
+                    const token = auth.generateToken(result[0].username);
                     res.status(200).json({ success: true, message: "Login successful", token: token });
                 } else {
                     res.status(401).json({ success: false, message: "Wrong username or password" });
