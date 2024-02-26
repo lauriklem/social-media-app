@@ -5,4 +5,10 @@ export const MainContent = styled.div`
     display: grid;
     margin: 0 auto;
     border: 1px solid black;
+    width: 100%;
+    padding: 0 10px;
+`;
+
+export const SideBySide = styled.div`
+    display: flex;
 `;

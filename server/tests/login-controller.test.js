@@ -44,7 +44,7 @@ test('Trying to log in with empty body', async () => {
 
 test('Deleting added user', async () => {
     const response = await request(app).delete(userUrl + '/testuser1235')
-    .set({ Authorization: auth});
+        .set({ Authorization: auth });
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
 });

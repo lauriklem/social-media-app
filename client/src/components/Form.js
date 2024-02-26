@@ -4,14 +4,15 @@ import { Button } from 'components';
 export const FormWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    max-width: 900px;
-    margin: 0 auto;
+    width: 100%;
 `;
 
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
-    width: 400px;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
 `;
 
 export const InfoLabel = styled.label`

@@ -4,6 +4,7 @@ const request = require('supertest');
 const userUrl = '/users';
 const loginUlr = '/login';
 const user1 = { username: 'testuser1235', password: 'testpassword1235' };
+const user2 = { username: 'testuser6543', password: 'testpassword9876' };
 let auth = '';
 
 afterAll(() => {
@@ -55,7 +56,7 @@ test('Trying to find user not in db', async () => {
 // Updating user
 test('Updating username', async () => {
     const response = await request(app).put(userUrl)
-        .send({ oldUsername: 'testuser1235', newUsername: 'testuser6543' })
+        .send({ oldUsername: user1.username, oldPassword: user1.password, newUsername: user2.username })
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
@@ -64,7 +65,7 @@ test('Updating username', async () => {
 
 test('Trying to update username that doesnt match to token', async () => {
     const response = await request(app, { "Authorization": auth }).put(userUrl)
-        .send({ oldUsername: 'testuser1235', newUsername: 'testuser0000' })
+        .send({ oldUsername: user1.username, oldPassword: user1.password, newUsername: 'testuser0000' })
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(401);
     expect(response.body.success).toBe(false);
@@ -72,7 +73,7 @@ test('Trying to update username that doesnt match to token', async () => {
 
 test('Trying to update username to empty username', async () => {
     const response = await request(app, { "Authorization": auth }).put(userUrl)
-        .send({ oldUsername: 'testuser6543', newUsername: '' })
+        .send({ oldUsername: user2.username, oldPassword: user1.password, newUsername: '' })
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(400);
     expect(response.body.success).toBe(false);
@@ -88,10 +89,18 @@ test('Trying to update user without giving new information', async () => {
 
 test('Updating password', async () => {
     const response = await request(app, { "Authorization": auth }).put(userUrl)
-        .send({ oldUsername: 'testuser6543', newPassword: 'testpassword9876' })
+        .send({ oldUsername: user2.username, oldPassword: user1.password, newPassword: user2.password })
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
+});
+
+test('Trying to update with wrong password', async () => {
+    const response = await request(app, { "Authorization": auth }).put(userUrl)
+        .send({ oldUsername: user2.username, oldPassword: user1.password, newPassword: 'testpassword0000' })
+        .set({ Authorization: auth });
+    expect(response.statusCode).toBe(401);
+    expect(response.body.success).toBe(false);
 });
 
 

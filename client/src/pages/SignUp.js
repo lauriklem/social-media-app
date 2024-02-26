@@ -51,15 +51,17 @@ export default function SignUp() {
     };
 
     const handleUsernameBlur = async () => {
-        try {
-            const available = await checkNameAvailable(username);
-            if (available) {
-                setUsernameInfo("");
-            } else {
-                setUsernameInfo("Username is already in use");
+        if (username.length > 0) {
+            try {
+                const available = await checkNameAvailable(username);
+                if (available) {
+                    setUsernameInfo("");
+                } else {
+                    setUsernameInfo("Username is already in use");
+                }
+            } catch (err) {
+                setUsernameInfo("Error checking username availability");
             }
-        } catch (err) {
-            setUsernameInfo("Error checking username availability");
         }
     };
 
@@ -114,8 +116,7 @@ export default function SignUp() {
                     setTimeout(() => {
                         navigate('/signin');
                     }, 5000);
-                }
-                else {
+                } else {
                     setErrorInfo("Something went wrong while creating an account");
                 }
             } catch (err) {

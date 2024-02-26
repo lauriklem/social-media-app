@@ -2,6 +2,11 @@ const pool = require('./connection.js');
 const bcrypt = require('bcrypt');
 const auth = require('../utils/authorization.js');
 
+/**
+ * Finds user in the db.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
 async function findUser(req, res) {
     try {
         const username = req.params.username;
@@ -22,6 +27,11 @@ async function findUser(req, res) {
     }
 };
 
+/**
+ * Adds user to the db.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
 async function addUser(req, res) {
     try {
         const username = req.body.username;
@@ -44,28 +54,57 @@ async function addUser(req, res) {
     }
 };
 
+/**
+ * Updates username and/or password of a user in the db.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
 async function updateUser(req, res) {
     try {
         const oldUsername = req.body.oldUsername;
         const newUsername = req.body.newUsername;
+        const oldPassword = req.body.oldPassword;
         const newPassword = req.body.newPassword;
 
+        // Check that usernames match
         const usersMatch = auth.checkUsername(req, oldUsername);
 
-        if (!(oldUsername && (newUsername || newPassword)) || oldUsername.length === 0 || (newUsername && newUsername.length === 0) || (newPassword && newPassword.length === 0)) {
+        // Check inputs
+        if (
+            !(oldUsername && (newUsername || (oldPassword && newPassword))) ||
+            oldUsername.length === 0 ||
+            (newUsername && newUsername.length === 0) ||
+            (newPassword && newPassword.length === 0) ||
+            (oldPassword && oldPassword.length === 0)
+        ) {
             res.status(400).json({ success: false, message: "Check input" });
         } else if (!usersMatch) {
             res.status(401).json({ success: false, message: "Unauthorized access" });
         } else {
             let q, updateArray;
+
+            // Check old password is correct
+            if (newPassword) {
+                const q = 'SELECT username, pwd FROM app_user WHERE username = ?';
+                const [result, fields] = await pool.execute(q, [oldUsername]);
+                const match = await bcrypt.compare(oldPassword, result[0].pwd);
+                if (!match) {
+                    res.status(401).json({ success: false, message: "Unauthorized access" });
+                    return;
+                }
+            } 
+
+            // Update both password and username
             if (newPassword && newUsername) {
                 const hashedpw = await bcrypt.hash(newPassword, 10);
                 q = 'UPDATE app_user SET username = ?, pwd = ? WHERE username = ?';
                 updateArray = [newUsername, hashedpw, oldUsername];
+            // Update password
             } else if (newPassword) {
                 const hashedpw = await bcrypt.hash(newPassword, 10);
                 q = 'UPDATE app_user SET pwd = ? WHERE username = ?';
                 updateArray = [hashedpw, oldUsername];
+            // Update username
             } else {
                 q = 'UPDATE app_user SET username = ? WHERE username = ?';
                 updateArray = [newUsername, oldUsername];
@@ -84,9 +123,16 @@ async function updateUser(req, res) {
     }
 };
 
+/**
+ * Deletes user from the db.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
 async function deleteUser(req, res) {
     try {
         const username = req.params.username
+
+        // Check that usernames match
         const usersMatch = auth.checkUsername(req, username);
 
         if (!username || username.length === 0) {

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title } from 'components';
 import { url as serverUrl } from 'connection';
 
-export default function SignIn(props) {
+export default function SignIn({ setLoginToken, setUser }) {
     const navigate = useNavigate();
     // Input fields
     const [username, setUsername] = useState('');
@@ -36,7 +36,8 @@ export default function SignIn(props) {
                 const result = await fetch(serverUrl + "login", requestOptions);
                 const response = await result.json();
                 if (response.success) {
-                    props.setLoginToken(response.token);
+                    setLoginToken(response.token);
+                    setUser(username);
                     navigate('/');
                 } else {
                     setErrorInfo("Incorrect username or password");
