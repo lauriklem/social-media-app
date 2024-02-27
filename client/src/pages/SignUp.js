@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title } from 'components';
+import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title, CenteredText } from 'components';
 import { url as serverUrl } from 'connection';
 import { validatePassword, validateUsername, checkNameAvailable } from 'utils/validateUserInfo';
 
@@ -131,8 +131,8 @@ export default function SignUp() {
         <MainContent>
             <Title>Create account</Title>
             <FormWrapper>
-                {created ? <InputLabel>Account created, you are now redirected to sign in.</InputLabel> :
-                    creating ? <InputLabel>Creating account...</InputLabel> :
+                {created ? <CenteredText>Account created, you are now redirected to sign in.</CenteredText> :
+                    creating ? <CenteredText>Creating account...</CenteredText> :
                         <Form action='' onSubmit={handleSubmit}>
                             <InputLabel htmlFor='username'>Username</InputLabel>
                             <Input type='text'

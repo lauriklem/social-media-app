@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormWrapper, Form, InfoLabel, FormButton, Input, InputLabel, Title } from 'components';
+import { FormWrapper, Form, InfoLabel, FormButton, Input, InputLabel, Title, CenteredText } from 'components';
 import { validatePassword } from 'utils/validateUserInfo';
 import { url as serverUrl } from 'connection';
 
@@ -17,6 +17,10 @@ export default function ChangePassword({ cookies }) {
     const [pwInfo, setPwInfo] = useState("");
     const [pwConfInfo, setPwConfInfo] = useState("");
     const [errorInfo, setErrorInfo] = useState("");
+    const [successText, setSuccessText] = useState("");
+
+    // Changing password
+    const [changing, setChanging] = useState(false);
 
     const handleOldPassword = (e) => {
         setOldPassword(e.target.value);
@@ -77,15 +81,18 @@ export default function ChangePassword({ cookies }) {
                 }),
             };
             try {
+                setChanging(true);
                 const result = await fetch(serverUrl + "users", requestOptions);
                 const response = await result.json();
                 if (response.success) {
-                    alert("ok")
+                    setSuccessText("Password changed successfully");
                 } else {
                     setErrorInfo("Something went wrong while changing password");
                 }
             } catch (err) {
                 setErrorInfo("Something went wrong while changing password");
+            } finally {
+                setChanging(false);
             }
         }
     };
@@ -93,42 +100,46 @@ export default function ChangePassword({ cookies }) {
     return (
         <FormWrapper>
             <Title>Change password</Title>
-            <Form action='' onSubmit={handleSubmit}>
-                <InputLabel htmlFor='password'>Current password</InputLabel>
-                <Input type='password'
-                    name='oldPassword'
-                    id='oldPassword'
-                    required
-                    value={oldPassword}
-                    onChange={e => setOldPassword(e.target.value)}
-                    maxLength="20"
-                />
-                <InputLabel htmlFor='password'>New password</InputLabel>
-                <Input type='password'
-                    name='newPassword'
-                    id='newPassword'
-                    required
-                    value={newPassword}
-                    onChange={handleNewPassword}
-                    onFocus={handlePwFocus}
-                    maxLength="20"
-                />
-                {pwInfo.length > 0 ? <InfoLabel>{pwInfo}</InfoLabel> : null}
+            {changing ? <CenteredText>Changing password...</CenteredText> :
+                successText.length > 0 ? <CenteredText>{successText}</CenteredText> :
+                    <Form action='' onSubmit={handleSubmit}>
+                        <InputLabel htmlFor='password'>Current password</InputLabel>
+                        <Input type='password'
+                            name='oldPassword'
+                            id='oldPassword'
+                            required
+                            value={oldPassword}
+                            onChange={handleOldPassword}
+                            maxLength="20"
+                        />
+                        <InputLabel htmlFor='password'>New password</InputLabel>
+                        <Input type='password'
+                            name='newPassword'
+                            id='newPassword'
+                            required
+                            value={newPassword}
+                            onChange={handleNewPassword}
+                            onFocus={handlePwFocus}
+                            maxLength="20"
+                        />
+                        {pwInfo.length > 0 ? <InfoLabel>{pwInfo}</InfoLabel> : null}
 
-                <InputLabel htmlFor='passwordConf'>Confirm password</InputLabel>
-                <Input type='password'
-                    name='passwordConf'
-                    id='passwordConf'
-                    required
-                    value={passwordConf}
-                    onChange={handlePasswordConf}
-                    onFocus={handlePwConfFocus}
-                    maxLength="20"
-                />
-                {pwConfInfo.length > 0 ? <InfoLabel>{pwConfInfo}</InfoLabel> : null}
-                <FormButton type='submit' >Change password</FormButton>
-                {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
-            </Form>
+                        <InputLabel htmlFor='passwordConf'>Confirm password</InputLabel>
+                        <Input type='password'
+                            name='passwordConf'
+                            id='passwordConf'
+                            required
+                            value={passwordConf}
+                            onChange={handlePasswordConf}
+                            onFocus={handlePwConfFocus}
+                            maxLength="20"
+                        />
+                        {pwConfInfo.length > 0 ? <InfoLabel>{pwConfInfo}</InfoLabel> : null}
+                        <FormButton type='submit' >Change password</FormButton>
+                        {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
+                    </Form>
+
+            }
         </FormWrapper>
     );
 }

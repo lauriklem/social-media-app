@@ -8,7 +8,7 @@ export const SidebarWrapper = styled.div`
 
 export const LinkWrapper = styled.div`
     display: grid;
-    margin: 30px 30px 0;
+    margin: 50px 30px 0;
 `;
 
 export const SidebarLink = styled(NavLink)`

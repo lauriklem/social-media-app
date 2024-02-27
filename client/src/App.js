@@ -61,8 +61,17 @@ function App() {
         <NavbarApp buttons={navButtonsApp} />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='signout' element={<SignOut deleteLoginToken={deleteLoginToken} removeUser={removeUser}/>} />
-          <Route path='profile/*' element={<Profile cookies={cookies} setUser={setUser}/>} />
+          <Route path='signout'
+            element={<SignOut deleteLoginToken={deleteLoginToken} removeUser={removeUser} />} />
+          <Route path='profile/*'
+            element={
+              <Profile
+                cookies={cookies}
+                setUser={setUser}
+                setLoginToken={setLoginToken}
+                deleteLoginToken={deleteLoginToken}
+                removeUser={removeUser}
+              />} />
           <Route path='*' element={<NoPage />} />
         </Routes>
       </BrowserRouter>
@@ -72,7 +81,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Welcome />} />
           <Route path='signup' element={<SignUp />} />
-          <Route path='signin' element={<SignIn setLoginToken={setLoginToken} setUser={setUser}/>} />
+          <Route path='signin' element={<SignIn setLoginToken={setLoginToken} setUser={setUser} />} />
           <Route path='signoutsuccess' element={<SignOutSuccess />} />
           <Route path='*' element={<NoPage />} />
         </Routes>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title } from 'components';
+import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title, CenteredText } from 'components';
 import { url as serverUrl } from 'connection';
 
 export default function SignIn({ setLoginToken, setUser }) {
@@ -54,7 +54,7 @@ export default function SignIn({ setLoginToken, setUser }) {
         <MainContent>
             <Title>Sign in</Title>
             <FormWrapper>
-                {signing ? <InputLabel>Signing in...</InputLabel> :
+                {signing ? <CenteredText>Signing in...</CenteredText> :
                     <Form action='' onSubmit={handleSubmit}>
                         <InputLabel htmlFor='username'>Username</InputLabel>
                         <Input type='text'

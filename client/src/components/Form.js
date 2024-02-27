@@ -17,8 +17,12 @@ export const Form = styled.form`
 
 export const InfoLabel = styled.label`
     white-space: pre-wrap;
-    color: red;
+    color: crimson;
     padding-bottom: 16px;
+`;
+
+export const CenteredText = styled.label`
+    text-align:center;
 `;
 
 export const FormButton = styled(Button)`
