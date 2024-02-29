@@ -2,12 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MainContent, InputLabel, FormWrapper, Form, FormButton, Title } from 'components';
 
-export default function SignOut(props) {
+export default function SignOut({ deleteLoginToken, removeUser }) {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.deleteLoginToken();
+        deleteLoginToken();
+        removeUser();
         navigate('/signoutsuccess');
     };
 

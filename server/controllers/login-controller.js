@@ -20,8 +20,7 @@ async function loginUser(req, res) {
                 } else {
                     res.status(401).json({ success: false, message: "Wrong username or password" });
                 }
-            }
-            else {
+            } else {
                 res.status(401).json({ success: false, message: "Wrong username or password" });
             }
         }

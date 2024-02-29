@@ -90,7 +90,7 @@ export default function SignUp() {
 
     useEffect(() => {
         if (pwConfInputVisited) {
-            if (password !== passwordConf) {
+            if (password !== passwordConf && passwordConf.length > 0) {
                 setPwConfInfo("Passwords don't match");
             } else {
                 setPwConfInfo("");

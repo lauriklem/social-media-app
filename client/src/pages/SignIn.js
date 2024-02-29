@@ -9,7 +9,7 @@ export default function SignIn({ setLoginToken, setUser }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    // Info texts
+    // Info text
     const [errorInfo, setErrorInfo] = useState("");
 
     // Signing in

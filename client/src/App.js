@@ -2,7 +2,7 @@ import React from 'react';
 import { Welcome, SignUp, NoPage, SignIn, Home, SignOut, Profile, SignOutSuccess } from 'pages';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { NavbarApp } from 'components';
+import { NavbarApp, Background } from 'components';
 import './styles/global.css';
 
 function App() {
@@ -56,36 +56,38 @@ function App() {
   ];
 
   return (
-    cookies['login-token'] ?
-      <BrowserRouter>
-        <NavbarApp buttons={navButtonsApp} />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='signout'
-            element={<SignOut deleteLoginToken={deleteLoginToken} removeUser={removeUser} />} />
-          <Route path='profile/*'
-            element={
-              <Profile
-                cookies={cookies}
-                setUser={setUser}
-                setLoginToken={setLoginToken}
-                deleteLoginToken={deleteLoginToken}
-                removeUser={removeUser}
-              />} />
-          <Route path='*' element={<NoPage />} />
-        </Routes>
-      </BrowserRouter>
-      :
-      <BrowserRouter>
-        <NavbarApp buttons={navButtonsLogin} />
-        <Routes>
-          <Route path='/' element={<Welcome />} />
-          <Route path='signup' element={<SignUp />} />
-          <Route path='signin' element={<SignIn setLoginToken={setLoginToken} setUser={setUser} />} />
-          <Route path='signoutsuccess' element={<SignOutSuccess />} />
-          <Route path='*' element={<NoPage />} />
-        </Routes>
-      </BrowserRouter>
+    <Background>
+      {cookies['login-token'] ?
+        <BrowserRouter>
+          <NavbarApp buttons={navButtonsApp} />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='signout'
+              element={<SignOut deleteLoginToken={deleteLoginToken} removeUser={removeUser} />} />
+            <Route path='profile/*'
+              element={
+                <Profile
+                  cookies={cookies}
+                  setUser={setUser}
+                  setLoginToken={setLoginToken}
+                  deleteLoginToken={deleteLoginToken}
+                  removeUser={removeUser}
+                />} />
+            <Route path='*' element={<NoPage />} />
+          </Routes>
+        </BrowserRouter>
+        :
+        <BrowserRouter>
+          <NavbarApp buttons={navButtonsLogin} />
+          <Routes>
+            <Route path='/' element={<Welcome />} />
+            <Route path='signup' element={<SignUp />} />
+            <Route path='signin' element={<SignIn setLoginToken={setLoginToken} setUser={setUser} />} />
+            <Route path='signoutsuccess' element={<SignOutSuccess />} />
+            <Route path='*' element={<NoPage />} />
+          </Routes>
+        </BrowserRouter>}
+    </Background>
   );
 }
 

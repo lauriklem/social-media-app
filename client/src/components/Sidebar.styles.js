@@ -17,11 +17,11 @@ export const SidebarLink = styled(NavLink)`
     margin: 20px 10px;
     font-size: large;
     text-decoration: none;
-    color: black;
+    color: ${colors.darkgray};
     justify-content: center;
     
     &.${props => props.isactivenav} {
-        color: ${colors.secondary};
+        color: ${colors.primary};
         text-decoration: underline;
   }
 `;

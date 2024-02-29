@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from 'react-router-dom';
 import { MainContent, Sidebar, SideBySide } from "components";
-import { ViewProfile, ChangeUsername, ChangePassword, DeleteUser } from 'pages';
+import { ViewProfile, ChangeUsername, ChangePassword, DeleteAccount } from 'pages';
 
 export default function Profile({ cookies, setUser, setLoginToken, deleteLoginToken, removeUser }) {
 
@@ -19,8 +19,8 @@ export default function Profile({ cookies, setUser, setLoginToken, deleteLoginTo
             text: "Change password"
         },
         {
-            to: 'deleteuser',
-            text: "Delete user"
+            to: 'deleteaccount',
+            text: "Delete account"
         },
 
     ];
@@ -44,9 +44,9 @@ export default function Profile({ cookies, setUser, setLoginToken, deleteLoginTo
                         element={<ChangePassword cookies={cookies} />} />
                     <Route path="changepassword"
                         element={<ChangePassword cookies={cookies} />} />
-                    <Route path="deleteuser"
+                    <Route path="deleteaccount"
                         element={
-                            <DeleteUser
+                            <DeleteAccount
                                 cookies={cookies}
                                 deleteLoginToken={deleteLoginToken}
                                 removeUser={removeUser}

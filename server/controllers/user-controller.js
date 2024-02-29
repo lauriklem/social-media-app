@@ -92,19 +92,19 @@ async function updateUser(req, res) {
                     res.status(401).json({ success: false, message: "Unauthorized access" });
                     return;
                 }
-            } 
+            }
 
             // Update both password and username
             if (newPassword && newUsername) {
                 const hashedpw = await bcrypt.hash(newPassword, 10);
                 q = 'UPDATE app_user SET username = ?, pwd = ? WHERE username = ?';
                 updateArray = [newUsername, hashedpw, oldUsername];
-            // Update password
+                // Update password
             } else if (newPassword) {
                 const hashedpw = await bcrypt.hash(newPassword, 10);
                 q = 'UPDATE app_user SET pwd = ? WHERE username = ?';
                 updateArray = [hashedpw, oldUsername];
-            // Update username
+                // Update username
             } else {
                 q = 'UPDATE app_user SET username = ? WHERE username = ?';
                 updateArray = [newUsername, oldUsername];

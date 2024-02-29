@@ -3,28 +3,34 @@ import styled from 'styled-components';
 import colors from 'styles/colors';
 
 export const Navbar = styled.nav`
-    background: ${colors.tertiary};
-    width:100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
+    padding: 20px 0 10px;
+    margin: 0 auto 10px;
+    border-bottom: 2px solid ${colors.lightgray};
 `;
 
 export const Navbtn = styled(NavLink)`
     display: flex;
     align-items: center;
-    margin: 0 10px;
+    margin: 10px;
     font-size: large;
     text-decoration: none;
-    color: white;
+    color: ${colors.gray};
     height: 100%;
     width: 100px;
     justify-content: center;
+    font-weight: bold;
     
     &.${props => props.isactivenav} {
-        background: ${colors.secondary};
-  }
+        color: ${colors.primary};
+    } 
+
+    &:hover{
+        color: ${colors.primary};
+	}
 `;
 
 export const NavbtnWrapper = styled.div`
