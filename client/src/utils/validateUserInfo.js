@@ -29,7 +29,7 @@ export const validateUsername = (username) => {
     if (username.length < 4) {
         length = "Minimum length 4 characters\n";
     }
-    if (!username.match(/[a-zA-Z0-9]+/g)) {
+    if (!username.match(/^[a-z0-9]+$/gi)) {
         pattern = "Contains only letters and numbers\n";
     }
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, InputLabel, FormWrapper, Form, FormButton, Title, Dialog, CheckboxWrapper, InfoLabel, CenteredText } from 'components';
 import { url as serverUrl } from 'connection';
@@ -12,9 +12,6 @@ export default function DeleteUser({ cookies, deleteLoginToken, removeUser }) {
     // Dialog open or not
     const [dialogOpen, setDialogOpen] = useState(false);
 
-    // Dialog element ref
-    const dialogRef = useRef(null);
-
     // Deleting account
     const [deleting, setDeleting] = useState(false);
 
@@ -25,9 +22,7 @@ export default function DeleteUser({ cookies, deleteLoginToken, removeUser }) {
         setAgreed(prev => !prev);
     };
 
-    const handleCheckChange = () => {
-
-    };
+    const handleCheckChange = () => {};
 
     const handleBtnClick = () => {
         if (agreed) {
@@ -97,7 +92,6 @@ export default function DeleteUser({ cookies, deleteLoginToken, removeUser }) {
                 text="This action is final, and you cannot get your account back."
                 confirmText="Delete"
                 cancelText="Cancel"
-                dialogRef={dialogRef}
             />
         </>
     );

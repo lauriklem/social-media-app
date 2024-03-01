@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title, CenteredText } from 'components';
 import { url as serverUrl } from 'connection';
@@ -98,6 +98,14 @@ export default function SignUp() {
         }
     }, [passwordConf, pwConfInputVisited, password]);
 
+    useEffect(() => {
+        let timer;
+        if (created) {
+            timer = setTimeout(() => { navigate('/signin') }, 5000);
+        }
+        return () => clearTimeout(timer);
+    }, [created, navigate]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (username.length > 0 && password.length > 0 && passwordConf.length > 0 &&
@@ -113,9 +121,6 @@ export default function SignUp() {
                 const response = await result.json();
                 if (response.success) {
                     setCreated(true);
-                    setTimeout(() => {
-                        navigate('/signin');
-                    }, 5000);
                 } else {
                     setErrorInfo("Something went wrong while creating an account");
                 }
