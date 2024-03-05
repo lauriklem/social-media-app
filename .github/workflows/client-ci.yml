@@ -1,0 +1,24 @@
+name: Client-side build and tests
+
+on: [push]        
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./client
+        
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build client and run tests
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: ./client/package-lock.json
+
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
