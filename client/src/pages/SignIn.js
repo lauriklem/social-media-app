@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title, CenteredText } from 'components';
-import { url as serverUrl } from 'connection';
 
-export default function SignIn({ setLoginToken, setUser }) {
+export default function SignIn({ setLoginToken, setUser, serverUrl }) {
     const navigate = useNavigate();
     // Input fields
     const [username, setUsername] = useState('');

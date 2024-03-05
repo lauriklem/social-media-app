@@ -1,11 +1,11 @@
 import React from "react";
 import '@testing-library/jest-dom'
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { NavbarApp } from "components";
 import { BrowserRouter } from 'react-router-dom'; // have to wrap links inside a router
 
 test('Navbar should render with given navlinks', () => {
-    const { getByText } = render(
+    render(
         <BrowserRouter>
             <NavbarApp
                 buttons={[
@@ -25,10 +25,7 @@ test('Navbar should render with given navlinks', () => {
             />
         </BrowserRouter>);
 
-    const first = getByText('First');
-    const second = getByText('Second');
-    const third = getByText('Third');
-    expect(first).toBeInTheDocument();
-    expect(second).toBeInTheDocument();
-    expect(third).toBeInTheDocument();
+    expect(screen.getByText('First')).toBeInTheDocument();
+    expect(screen.getByText('Second')).toBeInTheDocument();
+    expect(screen.getByText('Third')).toBeInTheDocument();
 })

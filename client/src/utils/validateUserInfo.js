@@ -1,5 +1,3 @@
-import { url as serverUrl } from 'connection';
-
 export const validatePassword = (password) => {
         let length = "";
         let capital = "";
@@ -36,7 +34,7 @@ export const validateUsername = (username) => {
     return length + pattern;
 }
 
-export const checkNameAvailable = async (username) => {
+export const checkNameAvailable = async (username, serverUrl) => {
     const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title, CenteredText } from 'components';
-import { url as serverUrl } from 'connection';
 import { validatePassword, validateUsername, checkNameAvailable } from 'utils/validateUserInfo';
 
-export default function SignUp() {
+export default function SignUp({ serverUrl }) {
     const navigate = useNavigate();
     // Input fields
     const [username, setUsername] = useState('');

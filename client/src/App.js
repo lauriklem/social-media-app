@@ -6,6 +6,7 @@ import { NavbarApp, Background } from 'components';
 import './styles/global.css';
 
 function App() {
+  const serverUrl = "http://127.0.0.1:3001/";
   const [cookies, setCookie, removeCookie] = useCookies(['login-token', 'username']);
 
   const setLoginToken = (token) => {
@@ -58,6 +59,8 @@ function App() {
   return (
     <Background>
       {cookies['login-token'] ?
+
+      // App after login
         <BrowserRouter>
           <NavbarApp buttons={navButtonsApp} />
           <Routes>
@@ -72,17 +75,21 @@ function App() {
                   setLoginToken={setLoginToken}
                   deleteLoginToken={deleteLoginToken}
                   removeUser={removeUser}
+                  serverUrl={serverUrl}
                 />} />
             <Route path='*' element={<NoPage />} />
           </Routes>
         </BrowserRouter>
         :
+
+        // App before login
         <BrowserRouter>
           <NavbarApp buttons={navButtonsLogin} />
           <Routes>
             <Route path='/' element={<Welcome />} />
-            <Route path='signup' element={<SignUp />} />
-            <Route path='signin' element={<SignIn setLoginToken={setLoginToken} setUser={setUser} />} />
+            <Route path='signup' element={<SignUp serverUrl={serverUrl} />} />
+            <Route path='signin' 
+            element={<SignIn setLoginToken={setLoginToken} setUser={setUser} serverUrl={serverUrl} />} />
             <Route path='signoutsuccess' element={<SignOutSuccess />} />
             <Route path='*' element={<NoPage />} />
           </Routes>

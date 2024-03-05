@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { MainContent, Sidebar, SideBySide } from "components";
 import { ViewProfile, ChangeUsername, ChangePassword, DeleteAccount } from 'pages';
 
-export default function Profile({ cookies, setUser, setLoginToken, deleteLoginToken, removeUser }) {
+export default function Profile({ cookies, setUser, setLoginToken, deleteLoginToken, removeUser, serverUrl }) {
 
     const links = [
         {
@@ -39,17 +39,19 @@ export default function Profile({ cookies, setUser, setLoginToken, deleteLoginTo
                                 cookies={cookies}
                                 setUser={setUser}
                                 setLoginToken={setLoginToken}
+                                serverUrl={serverUrl}
                             />} />
                     <Route path="changepassword"
-                        element={<ChangePassword cookies={cookies} />} />
+                        element={<ChangePassword cookies={cookies} serverUrl={serverUrl}/>} />
                     <Route path="changepassword"
-                        element={<ChangePassword cookies={cookies} />} />
+                        element={<ChangePassword cookies={cookies} serverUrl={serverUrl}/>} />
                     <Route path="deleteaccount"
                         element={
                             <DeleteAccount
                                 cookies={cookies}
                                 deleteLoginToken={deleteLoginToken}
                                 removeUser={removeUser}
+                                serverUrl={serverUrl}
                             />} />
                 </Routes>
             </SideBySide>

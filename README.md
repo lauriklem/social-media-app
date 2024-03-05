@@ -19,9 +19,9 @@ The application consists of three parts:
 3. *Database* is a MariaDB database.
 
 ## Other
-CI pipeline is done with GitHub actions.
+CI pipeline is done with GitHub Actions.
 
-Testing is done with Jest on the server-side and with Jest + React Testing Library on the client side.
+Testing is done with Jest on the server-side and with Jest + React Testing Library on the client-side.
 
 ## Authors
 

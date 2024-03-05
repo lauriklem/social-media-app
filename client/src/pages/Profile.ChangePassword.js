@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FormWrapper, Form, InfoLabel, FormButton, Input, InputLabel, Title, CenteredText } from 'components';
 import { validatePassword } from 'utils/validateUserInfo';
-import { url as serverUrl } from 'connection';
 
-export default function ChangePassword({ cookies }) {
+export default function ChangePassword({ cookies, serverUrl }) {
     // Input fields
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');

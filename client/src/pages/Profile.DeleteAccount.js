@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, InputLabel, FormWrapper, Form, FormButton, Title, Dialog, CheckboxWrapper, InfoLabel, CenteredText } from 'components';
-import { url as serverUrl } from 'connection';
 
-export default function DeleteUser({ cookies, deleteLoginToken, removeUser }) {
+export default function DeleteUser({ cookies, deleteLoginToken, removeUser, serverUrl }) {
     const navigate = useNavigate();
 
     // User has agreed to delete

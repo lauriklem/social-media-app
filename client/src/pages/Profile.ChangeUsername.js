@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FormWrapper, Form, InfoLabel, FormButton, Input, InputLabel, Title, CenteredText } from 'components';
 import { validateUsername, checkNameAvailable } from 'utils/validateUserInfo';
-import { url as serverUrl } from 'connection';
 
-export default function ChangeUsername({ cookies, setUser, setLoginToken }) {
+export default function ChangeUsername({ cookies, setUser, setLoginToken, serverUrl }) {
     // Input field
     const [username, setUsername] = useState('');
     const [usernameInputVisited, setUsernameInputVisited] = useState(false);
