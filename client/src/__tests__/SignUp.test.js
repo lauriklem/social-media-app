@@ -17,7 +17,7 @@ test('Signup should render', () => {
     );
 
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
 });
 
 test('Username input with too short username', async () => {
@@ -100,7 +100,7 @@ test('Signup is successful (server returns success)', async () => {
     userEvent.type(screen.getByLabelText(/username/i), 'user');
     userEvent.type(screen.getByLabelText(/^password$/i), 'Password123');
     userEvent.type(screen.getByLabelText(/confirm password/i), 'Password123');
-    userEvent.click(screen.getByText(/sign up/i));
+    userEvent.click(screen.getByRole('button', { name: /sign up/i }));
     expect(await screen.findByText(/account created/i)).toBeInTheDocument();
 });
 
@@ -116,6 +116,6 @@ test('Signup fails (server returns not success)', async () => {
     userEvent.type(screen.getByLabelText(/username/i), 'user');
     userEvent.type(screen.getByLabelText(/^password$/i), 'Password123');
     userEvent.type(screen.getByLabelText(/confirm password/i), 'Password123');
-    userEvent.click(screen.getByText(/sign up/i));
+    userEvent.click(screen.getByRole('button', { name: /sign up/i }));
     expect(await screen.findByText(/something went wrong/i)).toBeInTheDocument();
 });
