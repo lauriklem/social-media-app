@@ -1,5 +1,5 @@
 import React, { useEffect, createRef } from "react";
-import { DialogForm, DialogContainer, DialogButton, DialogTitle, DialogText, BtnContainer } from "./Dialog.styles";
+import { DialogContainer, DialogButton, DialogTitle, DialogText, BtnContainer } from "./Dialog.styles";
 
 export default function Dialog({ open, handleClose, title, text, confirmText, cancelText }) {
     const dialogRef = createRef();
