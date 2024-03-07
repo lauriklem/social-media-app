@@ -10,7 +10,7 @@ beforeAll(() => {
     HTMLDialogElement.prototype.close = jest.fn();
 });
 
-test('Dialog should render with texts', async () => {
+test('Dialog should render with texts', () => {
     render(
         <Dialog
             open={true}

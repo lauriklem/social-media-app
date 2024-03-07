@@ -6,6 +6,10 @@ import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'; // have to wrap links inside a router
 import { act } from "react-dom/test-utils";
 
+afterEach(() => {
+    jest.clearAllMocks();
+});
+
 test('Signin should render', () => {
     render(
         <BrowserRouter>

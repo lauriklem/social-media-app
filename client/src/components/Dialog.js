@@ -17,14 +17,12 @@ export default function Dialog({ open, handleClose, title, text, confirmText, ca
 
     return (
         <DialogContainer onClose={handleClose} ref={dialogRef}>
-            <DialogForm method="dialog">
-                <DialogTitle>{title}</DialogTitle>
-                <DialogText>{text}</DialogText>
-                <BtnContainer>
-                    <DialogButton value={cancelText} autoFocus>{cancelText}</DialogButton>
-                    <DialogButton value={confirmText}>{confirmText}</DialogButton>
-                </BtnContainer>
-            </DialogForm>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogText>{text}</DialogText>
+            <BtnContainer>
+                <DialogButton value={cancelText} autoFocus>{cancelText}</DialogButton>
+                <DialogButton value={confirmText}>{confirmText}</DialogButton>
+            </BtnContainer>
         </DialogContainer>
     );
 }

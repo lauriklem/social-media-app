@@ -102,7 +102,7 @@ export default function ChangePassword({ cookies, serverUrl }) {
             {changing ? <CenteredText>Changing password...</CenteredText> :
                 successText.length > 0 ? <CenteredText>{successText}</CenteredText> :
                     <Form action='' onSubmit={handleSubmit}>
-                        <InputLabel htmlFor='password'>Current password</InputLabel>
+                        <InputLabel htmlFor='oldPassword'>Current password</InputLabel>
                         <Input type='password'
                             name='oldPassword'
                             id='oldPassword'
@@ -111,7 +111,7 @@ export default function ChangePassword({ cookies, serverUrl }) {
                             onChange={handleOldPassword}
                             maxLength="20"
                         />
-                        <InputLabel htmlFor='password'>New password</InputLabel>
+                        <InputLabel htmlFor='newPassword'>New password</InputLabel>
                         <Input type='password'
                             name='newPassword'
                             id='newPassword'
