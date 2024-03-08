@@ -1,5 +1,5 @@
 import React, { useEffect, createRef } from "react";
-import { DialogContainer, DialogButton, DialogTitle, DialogText, BtnContainer } from "./Dialog.styles";
+import { DialogForm, DialogContainer, DialogButton, DialogTitle, DialogText, BtnContainer } from "./Dialog.styles";
 
 export default function Dialog({ open, handleClose, title, text, confirmText, cancelText }) {
     const dialogRef = createRef();
@@ -17,12 +17,14 @@ export default function Dialog({ open, handleClose, title, text, confirmText, ca
 
     return (
         <DialogContainer onClose={handleClose} ref={dialogRef}>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogText>{text}</DialogText>
-            <BtnContainer>
-                <DialogButton value={cancelText} autoFocus>{cancelText}</DialogButton>
-                <DialogButton value={confirmText}>{confirmText}</DialogButton>
-            </BtnContainer>
+            <DialogForm method="dialog">
+                <DialogTitle>{title}</DialogTitle>
+                <DialogText>{text}</DialogText>
+                <BtnContainer>
+                    <DialogButton value={cancelText} autoFocus>{cancelText}</DialogButton>
+                    <DialogButton value={confirmText}>{confirmText}</DialogButton>
+                </BtnContainer>
+            </DialogForm>
         </DialogContainer>
     );
 }
