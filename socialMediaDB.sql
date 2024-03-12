@@ -24,8 +24,8 @@ cdesc VARCHAR(50)
 );
 
 CREATE TABLE content_of_post(
-contentid INT UNSIGNED NOT NULL,
 postid BIGINT UNSIGNED NOT NULL,
+contentid INT UNSIGNED NOT NULL,
 ctype VARCHAR(10) NOT NULL,
 content TEXT NOT NULL,
 CONSTRAINT PRIMARY KEY (contentid, postid),
@@ -54,6 +54,11 @@ REFERENCES content_type(ctype)
 ON UPDATE CASCADE
 );
 
+-- Add data
+INSERT INTO content_type(ctype, cdesc) VALUES
+('text', 'Text content'),
+('image', 'Image content');
+
 /*
 -- Add test data
 INSERT INTO app_user(username, pwd) VALUES
@@ -62,10 +67,6 @@ INSERT INTO app_user(username, pwd) VALUES
 ('Mat', 'asdasd'),
 ('somewhatlongusername', 'notsogood'),
 ('anotherUser', 'mypassWORD');
-
-INSERT INTO content_type(ctype, cdesc) VALUES
-('text', 'Text content'),
-('image', 'Image content');
 
 INSERT INTO post(username, created) VALUES
 ('User1', '2024-01-01 10:11:12'),

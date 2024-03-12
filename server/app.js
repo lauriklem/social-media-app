@@ -10,7 +10,7 @@ const hostname = '127.0.0.1';
 const app = express();
 app.use(bodyParser.json());
 
-// Use REST style
+// Allowed methods and headers
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -34,6 +34,9 @@ app.use(userRoutes);
 
 const loginRoutes = require('./routes/login-routes.js');
 app.use(loginRoutes);
+
+const postRoutes = require('./routes/post-routes.js');
+app.use(postRoutes);
 
 // Start server
 const server = app.listen(port, hostname, () => {

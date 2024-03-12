@@ -2,7 +2,7 @@ const app = require('../app.js')
 const request = require('supertest');
 
 const userUrl = '/users';
-const loginUlr = '/login';
+const loginUrl = '/login';
 const user1 = { username: 'testuser1235', password: 'testpassword1235' };
 let auth = '';
 
@@ -17,7 +17,7 @@ test('Adding user to db', async () => {
 });
 
 test('Logging in with the added user', async () => {
-    const response = await request(app).post(loginUlr).send(user1);
+    const response = await request(app).post(loginUrl).send(user1);
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
     expect(response.body.token.length > 0).toBe(true);
@@ -25,25 +25,25 @@ test('Logging in with the added user', async () => {
 });
 
 test('Trying to log in with wrong password', async () => {
-    const response = await request(app).post(loginUlr).send({ username: 'testuser1235', password: 'wrongpassword' });
+    const response = await request(app).post(loginUrl).send({ username: 'testuser1235', password: 'wrongpassword' });
     expect(response.statusCode).toBe(401);
     expect(response.body.success).toBe(false);
 });
 
 test('Trying to log in with wrong username', async () => {
-    const response = await request(app).post(loginUlr).send({ username: 'testuser7777', password: 'wrongpassword' });
+    const response = await request(app).post(loginUrl).send({ username: 'testuser7777', password: 'wrongpassword' });
     expect(response.statusCode).toBe(401);
     expect(response.body.success).toBe(false);
 });
 
 test('Trying to log in with empty body', async () => {
-    const response = await request(app).post(loginUlr).send({ username: "", password: "" });
+    const response = await request(app).post(loginUrl).send({ username: "", password: "" });
     expect(response.statusCode).toBe(400);
     expect(response.body.success).toBe(false);
 });
 
 test('Deleting added user', async () => {
-    const response = await request(app).delete(userUrl + '/testuser1235')
+    const response = await request(app).delete(`${userUrl}/${user1.username}`)
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
