@@ -83,17 +83,53 @@ test('Trying to get post by id that doesnt exist', async () => {
 });
 
 // Updating post
-test('Updating post', async () => {
+test('Updating content of post', async () => {
     const response = await request(app).put(postUrl)
-        .send({ postid: postid, contentArray: post1.contentArray })
+        .send({
+            postid: postid, 
+            updatedArray: [{
+                ctype: 'text',
+                content: 'First updated'
+            },
+            {
+                ctype: 'text',
+                content: 'Second updated'
+            }]
+        })
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
 });
 
+test('Adding more content to post', async () => {
+    const response = await request(app).put(postUrl)
+        .send({
+            postid: postid, 
+            newArray: [{
+                ctype: 'text',
+                content: 'First added'
+            },
+            {
+                ctype: 'text',
+                content: 'Second added'
+            }]
+        })
+        .set({ Authorization: auth });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.success).toBe(true);
+});
+
+test('Getting updated post', async () => {
+    const response = await request(app).get(postUrl + `/${postid}`).set({ Authorization: auth });
+    expect(response.statusCode).toBe(200);
+    console.log(response.body);
+    expect(response.body.data[0].content).toBe('First updated');
+    expect(response.body.data.length).toBe(4);
+});
+
 test('Trying to update post with no content', async () => {
     const response = await request(app).put(postUrl)
-        .send({ postid: postid, contentArray: [{}] })
+        .send({ postid: postid, updatedArray: [{}] })
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(500);
     expect(response.body.success).toBe(false);
@@ -101,7 +137,7 @@ test('Trying to update post with no content', async () => {
 
 test('Trying to update post that doesnt exist', async () => {
     const response = await request(app).put(postUrl)
-        .send({ postid: 0, contentArray: post1.contentArray })
+        .send({ postid: 0, updatedArray: post1.contentArray })
         .set({ Authorization: auth });
     expect(response.statusCode).toBe(404);
     expect(response.body.success).toBe(false);

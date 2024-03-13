@@ -12,10 +12,13 @@ async function findPostById(req, res) {
         if (postid == null) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
-            const q = 'SELECT username, created FROM post WHERE postid = ?';
+            const q = `SELECT p.postid, p.username, p.created, c.ctype, c.content 
+            FROM post p JOIN content_of_post c
+            ON p.postid = c.postid
+            WHERE p.postid = ?`;
             const [result, fields] = await pool.execute(q, [postid]);
-            if (result[0]) {
-                res.status(200).json({ success: true, data: result[0], message: "Found post" });
+            if (result.length > 0) {
+                res.status(200).json({ success: true, data: result, message: "Found post" });
             } else {
                 res.status(404).json({ success: false, message: "Did not find post" });
             }
@@ -33,7 +36,9 @@ async function findPostById(req, res) {
  */
 async function getAllPosts(req, res) {
     try {
-        const q = 'SELECT postid, username, created FROM post';
+        const q = `SELECT p.postid, p.username, p.created, c.ctype, c.content 
+        FROM post p JOIN content_of_post c
+        ON p.postid = c.postid`;
         const [result, fields] = await pool.execute(q);
         if (result.length > 0) {
             res.status(200).json({ success: true, data: result, message: "Found posts" });
@@ -83,17 +88,54 @@ async function addPost(req, res) {
 }
 
 /**
- * Updates the content (adds more) of a post in db.
+ * Updates the content of a post in db.
  * @param {*} req HTTP request
  * @param {*} res HTTP response
  */
 async function updatePost(req, res) {
     try {
         const postid = req.body.postid;
-        const contentArray = req.body.contentArray;
-        if (postid == null || !contentArray || contentArray.length === 0) {
+        const updatedArray = req.body.updatedArray;
+        const newArray = req.body.newArray;
+        if (postid == null || (updatedArray && updatedArray.length === 0) || (newArray && newArray.length === 0)) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
+            // Check that post exists
+            let q = 'SELECT * FROM content_of_post WHERE postid = ?';
+            const [result, fields] = await pool.execute(q, [postid]);
+            if (!result[0]) {
+                res.status(404).json({ success: false, message: "Did not find post" });
+            } else {
+                const previousRows = result.length; // Current number of content for this post
+
+                // Update old content
+                if (updatedArray) {
+                    for (let i = 0; i < updatedArray.length; i++) {
+                        const c = updatedArray[i];
+                        const q = 'UPDATE content_of_post SET ctype = ?, content = ? WHERE postid = ? AND contentid = ?';
+                        const [result, fields] = await pool.execute(q, [c.ctype, c.content, postid, i + 1]);
+                        if (result.affectedRows === 0) {
+                            res.status(500).json({ success: false, message: "Error updating content of post" });
+                            return;
+                        }
+                    }
+                }
+
+                // Add new content
+                if (newArray) {
+                    for (let i = 0; i < newArray.length; i++) {
+                        const c = newArray[i]
+                        q = 'INSERT INTO content_of_post(contentid, postid, ctype, content) VALUES (?, ?, ?, ?)'
+                        const [result, fields] = await pool.execute(q, [i + previousRows + 1, postid, c.ctype, c.content]);
+                        if (result.affectedRows === 0) {
+                            res.status(500).json({ success: false, message: "Error updating content of post" });
+                            return;
+                        }
+                    }
+                }
+                res.status(200).json({ success: true, message: "Post updated successfully" });
+            }
+            /*
             let q = 'SELECT * FROM content_of_post WHERE postid = ?';
             const [result, fields] = await pool.execute(q, [postid]);
             if (!result[0]) {
@@ -112,7 +154,8 @@ async function updatePost(req, res) {
                     }
                 }
                 res.status(200).json({ success: true, message: "Post updated successfully" });
-            }
+                
+            } */
         }
     } catch (err) {
         console.log(err);
