@@ -135,27 +135,6 @@ async function updatePost(req, res) {
                 }
                 res.status(200).json({ success: true, message: "Post updated successfully" });
             }
-            /*
-            let q = 'SELECT * FROM content_of_post WHERE postid = ?';
-            const [result, fields] = await pool.execute(q, [postid]);
-            if (!result[0]) {
-                res.status(404).json({ success: false, message: "Did not find post" });
-            } else {
-                const previousRows = result.length; // Current number of content for this post
-
-                // Add new content to the content_of_post table
-                for (let i = 0; i < contentArray.length; i++) {
-                    const c = contentArray[i]
-                    q = 'INSERT INTO content_of_post(contentid, postid, ctype, content) VALUES (?, ?, ?, ?)'
-                    const [result, fields] = await pool.execute(q, [i + previousRows + 1, postid, c.ctype, c.content]);
-                    if (result.affectedRows === 0) {
-                        res.status(500).json({ success: false, message: "Error updating content of post" });
-                        return;
-                    }
-                }
-                res.status(200).json({ success: true, message: "Post updated successfully" });
-                
-            } */
         }
     } catch (err) {
         console.log(err);

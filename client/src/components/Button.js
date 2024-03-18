@@ -8,6 +8,8 @@ export const Button = styled.button`
 	background: ${colors.primary};
 	color: ${colors.background};
 	border-radius: 4px;
+	max-width: 400px;
+	width: 100%;
 
 	&:hover{
 		opacity: 0.8;

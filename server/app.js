@@ -20,13 +20,13 @@ app.use((req, res, next) => {
 
 // This is for dev purposes only. Logs details each request and makes the server wait for 1 second
 // before proceeding.
-/*
+
 app.use(async (req, res, next) => {
     console.log(`New request to ${req.url}, parameters ${JSON.stringify(req.params)}, body ${JSON.stringify(req.body)}`);
     await new Promise(resolve => setTimeout(resolve, 1000));
     next()
 });
-*/
+
 
 // Routes
 const userRoutes = require('./routes/user-routes.js');

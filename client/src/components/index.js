@@ -7,3 +7,5 @@ export { FormWrapper, Form, InfoLabel, FormButton, CenteredText, CheckboxWrapper
 export { default as NavbarApp } from './NavbarApp';
 export { default as Sidebar } from './Sidebar';
 export { default as Dialog } from './Dialog';
+export { Textarea, TextareaWrapper } from './Textarea';
+export { default as Post } from './Post';

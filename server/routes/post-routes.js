@@ -4,15 +4,13 @@ const auth = require('../utils/authorization.js');
 const router = express.Router();
 const ctrl = require('../controllers/post-controller.js');
 
-router.use(auth.authorizationMiddleware);
-
 router.route('/posts')
-    .get(ctrl.getAllPosts)
-    .post(ctrl.addPost)
-    .put(ctrl.updatePost)
+    .get(auth.authorizationMiddleware, ctrl.getAllPosts)
+    .post(auth.authorizationMiddleware, ctrl.addPost)
+    .put(auth.authorizationMiddleware, ctrl.updatePost)
 
 router.route('/posts/:postid')
-    .get(ctrl.findPostById)
-    .delete(ctrl.deletePost)
+    .get(auth.authorizationMiddleware, ctrl.findPostById)
+    .delete(auth.authorizationMiddleware, ctrl.deletePost)
 
 module.exports = router;

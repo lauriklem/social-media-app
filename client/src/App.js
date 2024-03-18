@@ -1,5 +1,5 @@
 import React from 'react';
-import { Welcome, SignUp, NoPage, SignIn, Home, SignOut, Profile, SignOutSuccess } from 'pages';
+import { Welcome, SignUp, NoPage, SignIn, Home, SignOut, Profile, SignOutSuccess, NewPost } from 'pages';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { NavbarApp, Background } from 'components';
@@ -30,6 +30,10 @@ function App() {
     {
       to: '/',
       text: 'Home'
+    },
+    {
+      to: '/newpost',
+      text: 'Create post'
     },
     {
       to: '/profile',
@@ -64,7 +68,8 @@ function App() {
         <BrowserRouter>
           <NavbarApp buttons={navButtonsApp} />
           <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<Home cookies={cookies} serverUrl={serverUrl}/>} />
+            <Route path='/newpost' element={<NewPost cookies={cookies} serverUrl={serverUrl}/>} />
             <Route path='signout'
               element={<SignOut deleteLoginToken={deleteLoginToken} removeUser={removeUser} />} />
             <Route path='profile/*'
