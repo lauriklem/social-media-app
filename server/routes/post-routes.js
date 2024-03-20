@@ -13,4 +13,7 @@ router.route('/posts/:postid')
     .get(auth.authorizationMiddleware, ctrl.findPostById)
     .delete(auth.authorizationMiddleware, ctrl.deletePost)
 
+router.route('/posts/:username')
+    .get(auth.authorizationMiddleware, ctrl.getAllPostsByName)
+
 module.exports = router;

@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { MainContent, Sidebar, SideBySide } from "components";
 import { ViewProfile, ChangeUsername, ChangePassword, DeleteAccount } from 'pages';
 
+// Parent page for current user's profile pages
 export default function Profile({ cookies, setUser, setLoginToken, deleteLoginToken, removeUser, serverUrl }) {
 
     const links = [

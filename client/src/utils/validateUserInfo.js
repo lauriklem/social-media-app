@@ -1,3 +1,4 @@
+// Check if password is valid
 export const validatePassword = (password) => {
         let length = "";
         let capital = "";
@@ -20,6 +21,7 @@ export const validatePassword = (password) => {
         return length + capital + lower + number;
 };
 
+// Check if username is valid
 export const validateUsername = (username) => {
     let length = "";
     let pattern = "";
@@ -34,6 +36,7 @@ export const validateUsername = (username) => {
     return length + pattern;
 }
 
+// Check if username is not in use in the db
 export const checkNameAvailable = async (username, serverUrl) => {
     const requestOptions = {
         method: 'GET',

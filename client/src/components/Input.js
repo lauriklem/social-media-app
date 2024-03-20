@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colors from "styles/colors";
 
+// Styles of the input fields used in the app
 export const Input = styled.input`
     padding: 12px 8px;
     border: 1px solid ${colors.gray};
@@ -21,4 +22,9 @@ export const Input = styled.input`
         outline: none;
     }
     }
+`;
+
+export const InputLabel = styled.label`
+    margin-bottom: 8px;
+    margin-top: 8px;
 `;

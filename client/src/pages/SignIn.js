@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MainContent, Input, InputLabel, FormWrapper, Form, InfoLabel, FormButton, Title, CenteredText } from 'components';
 
+// Page for signing/logging in
 export default function SignIn({ setLoginToken, setUser, serverUrl }) {
     const navigate = useNavigate();
     // Input fields
@@ -22,6 +23,7 @@ export default function SignIn({ setLoginToken, setUser, serverUrl }) {
         setPassword(e.target.value);
     };
 
+    // Sign in to the app, server returns login token
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (username.length > 0 && password.length > 0) {
@@ -35,6 +37,7 @@ export default function SignIn({ setLoginToken, setUser, serverUrl }) {
                 const result = await fetch(serverUrl + "login", requestOptions);
                 const response = await result.json();
                 if (response.success) {
+                    // Set login token and username, then navigate to home of the app
                     setLoginToken(response.token);
                     setUser(username);
                     navigate('/');

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Textarea, MainContent, TextareaWrapper, Title, Button, CenteredText, InfoLabel } from "components";
 
+// Page for creating a new post
 export default function NewPost({ cookies, serverUrl }) {
     // Text of the post
     const [postText, setPostText] = useState('');
@@ -9,15 +10,16 @@ export default function NewPost({ cookies, serverUrl }) {
     const [creating, setCreating] = useState(false);
     const [created, setCreated] = useState(false);
 
+    // Error message
     const [errorInfo, setErrorInfo] = useState("");
 
     const handlePostChange = (e) => {
         setPostText(e.target.value);
     };
 
+    // Creates a new post to db
     const handleSubmit = async () => {
         if (postText.length > 0) {
-            //const modified = postText.replaceAll(/(?:\r\n|\r|\n)/g, '<br>');
             const requestOptions = {
                 method: 'POST',
                 headers: {

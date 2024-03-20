@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, InputLabel, FormWrapper, Form, FormButton, Title, Dialog, CheckboxWrapper, InfoLabel, CenteredText } from 'components';
 
+// Page for deleting account
 export default function DeleteUser({ cookies, deleteLoginToken, removeUser, serverUrl }) {
     const navigate = useNavigate();
 
@@ -17,12 +18,14 @@ export default function DeleteUser({ cookies, deleteLoginToken, removeUser, serv
     // Info text
     const [errorInfo, setErrorInfo] = useState("");
 
+    // User clicks checkbox
     const handleCheckClick = () => {
         setAgreed(prev => !prev);
     };
 
     const handleCheckChange = () => {};
 
+    // User clicks delete button, open dialog
     const handleBtnClick = () => {
         if (agreed) {
             setDialogOpen(true);
@@ -33,6 +36,7 @@ export default function DeleteUser({ cookies, deleteLoginToken, removeUser, serv
         e.preventDefault()
     };
 
+    // Delete account if user clicks delete in the dialog
     const handleDialogClose = async (e) => {
         e.preventDefault()
         setDialogOpen(false);

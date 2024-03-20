@@ -1,5 +1,5 @@
 import React from 'react';
-import { Welcome, SignUp, NoPage, SignIn, Home, SignOut, Profile, SignOutSuccess, NewPost } from 'pages';
+import { Welcome, SignUp, NoPage, SignIn, Home, SignOut, Profile, SignOutSuccess, NewPost, MyPosts } from 'pages';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { NavbarApp, Background } from 'components';
@@ -7,8 +7,10 @@ import './styles/global.css';
 
 function App() {
   const serverUrl = "http://127.0.0.1:3001/";
-  const [cookies, setCookie, removeCookie] = useCookies(['login-token', 'username']);
 
+  // Login token is used for authorization, username for identifying current user
+  const [cookies, setCookie, removeCookie] = useCookies(['login-token', 'username']);
+  
   const setLoginToken = (token) => {
     setCookie('login-token', token);
   };
@@ -25,7 +27,7 @@ function App() {
     removeCookie('username')
   };
 
-  // Navigation bar buttons
+  // Navigation bar buttons inside app
   const navButtonsApp = [
     {
       to: '/',
@@ -36,8 +38,12 @@ function App() {
       text: 'Create post'
     },
     {
+      to: '/myposts',
+      text: 'My posts'
+    },
+    {
       to: '/profile',
-      text: 'Profile'
+      text: 'My profile'
     },
     {
       to: '/signout',
@@ -45,6 +51,7 @@ function App() {
     },
   ];
 
+  // Navigation bar buttons before logging in
   const navButtonsLogin = [
     {
       to: '/',
@@ -70,6 +77,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home cookies={cookies} serverUrl={serverUrl}/>} />
             <Route path='/newpost' element={<NewPost cookies={cookies} serverUrl={serverUrl}/>} />
+            <Route path='/myposts' element={<MyPosts cookies={cookies} serverUrl={serverUrl}/>} />
             <Route path='signout'
               element={<SignOut deleteLoginToken={deleteLoginToken} removeUser={removeUser} />} />
             <Route path='profile/*'

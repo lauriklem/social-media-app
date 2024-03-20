@@ -2,6 +2,7 @@ import styled from "styled-components";
 import colors from 'styles/colors';
 import { NavLink } from 'react-router-dom';
 
+// Styles of the post component
 export const PostContainer = styled.div`
     padding: 10px;
     margin: 8px 0;

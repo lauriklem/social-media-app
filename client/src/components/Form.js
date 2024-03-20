@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Button } from 'components';
 import colors from 'styles/colors';
 
+// Styles of the forms used in the app
 export const FormWrapper = styled.div`
     display: flex;
     flex-direction: column;

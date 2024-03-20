@@ -50,7 +50,7 @@ export default function SignUp({ serverUrl }) {
     };
 
     const handleUsernameBlur = async () => {
-        if (username.length > 0) {
+        if (username.length > 0 && usernameInfo === "") {
             try {
                 const available = await checkNameAvailable(username, serverUrl);
                 if (available) {

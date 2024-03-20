@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colors from 'styles/colors';
 
+// Styles of the buttons used in the app
 export const Button = styled.button`
 	padding: 16px;
 	font-size: large;

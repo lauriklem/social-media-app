@@ -1,6 +1,7 @@
 import React from 'react';
 import { MainContent, Title } from 'components';
 
+// Home page of the app (before logging in)
 export default function Welcome() {
     return (
         <MainContent>

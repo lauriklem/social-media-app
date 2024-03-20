@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FormWrapper, Form, InfoLabel, FormButton, Input, InputLabel, Title, CenteredText } from 'components';
 import { validatePassword } from 'utils/validateUserInfo';
 
+// Page for changing password
 export default function ChangePassword({ cookies, serverUrl }) {
     // Input fields
     const [oldPassword, setOldPassword] = useState('');
@@ -18,7 +19,7 @@ export default function ChangePassword({ cookies, serverUrl }) {
     const [errorInfo, setErrorInfo] = useState("");
     const [successText, setSuccessText] = useState("");
 
-    // Changing password
+    // Currently changing password
     const [changing, setChanging] = useState(false);
 
     const handleOldPassword = (e) => {
@@ -41,6 +42,7 @@ export default function ChangePassword({ cookies, serverUrl }) {
         setPwConfInputVisited(true);
     };
 
+    // Check if new password is valid when user types to the input field
     useEffect(() => {
         if (pwInputVisited) {
             const validstr = validatePassword(newPassword);
@@ -52,6 +54,7 @@ export default function ChangePassword({ cookies, serverUrl }) {
         }
     }, [newPassword, pwInputVisited]);
 
+    // Check if confirm password equals to new password when user types to the input field
     useEffect(() => {
         if (pwConfInputVisited) {
             if (newPassword !== passwordConf) {
@@ -62,7 +65,7 @@ export default function ChangePassword({ cookies, serverUrl }) {
         }
     }, [passwordConf, pwConfInputVisited, newPassword]);
 
-
+    // Changes the user's password in db
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (oldPassword.length > 0 && newPassword.length > 0 && passwordConf.length > 0 &&

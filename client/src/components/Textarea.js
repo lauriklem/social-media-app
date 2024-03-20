@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colors from 'styles/colors';
 
+// Styles of the textarea used in the app
 export const Textarea = styled.textarea`
     resize: none;
     padding: 12px 8px;

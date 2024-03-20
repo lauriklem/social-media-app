@@ -2,6 +2,7 @@ import styled from "styled-components";
 import colors from 'styles/colors';
 import { Button } from 'components';
 
+// Styles of the dialog component
 export const DialogContainer = styled.dialog`
     border: 3px solid ${colors.gray};
     padding: 0;

@@ -2,6 +2,7 @@ import React from "react";
 import { PostContainer, PostText, PostTitle, TextLink, UserLink } from "./Post.styles";
 import { formatDate } from "utils/dateUtils";
 
+// Post component, shows information of one post
 export default function Post({ content, username, created, short }) {
     const formattedDate = formatDate(created);
 
@@ -13,7 +14,12 @@ export default function Post({ content, username, created, short }) {
     return (
         <PostContainer>
             <PostTitle>
-                <UserLink><em>{username}</em></UserLink> on {formattedDate}</PostTitle>
+                {
+                    username.length > 0 ?
+                        <><UserLink><em>{username}</em></UserLink> on </> : <>On </>
+                }
+                {formattedDate}
+            </PostTitle>
             <TextLink>
                 <PostText>{trimmedContent}</PostText>
             </TextLink>

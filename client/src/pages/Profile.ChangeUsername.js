@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FormWrapper, Form, InfoLabel, FormButton, Input, InputLabel, Title, CenteredText } from 'components';
 import { validateUsername, checkNameAvailable } from 'utils/validateUserInfo';
 
+// Page for changing username
 export default function ChangeUsername({ cookies, setUser, setLoginToken, serverUrl }) {
     // Input field
     const [username, setUsername] = useState('');
@@ -24,10 +25,11 @@ export default function ChangeUsername({ cookies, setUser, setLoginToken, server
         setUsernameInputVisited(true);
     };
 
+    // Check if username is available when user leaves the input field
     const handleUsernameBlur = async () => {
-        if (username.length > 0) {
+        if (username.length > 0 && usernameInfo === "") {
             try {
-                const available = await checkNameAvailable(username);
+                const available = await checkNameAvailable(username, serverUrl);
                 if (available) {
                     setUsernameInfo("");
                 } else {
@@ -39,6 +41,7 @@ export default function ChangeUsername({ cookies, setUser, setLoginToken, server
         }
     };
 
+    // Check if username is valid when user types in the input field
     useEffect(() => {
         if (usernameInputVisited) {
             const validstr = validateUsername(username);
@@ -50,6 +53,7 @@ export default function ChangeUsername({ cookies, setUser, setLoginToken, server
         }
     }, [username, usernameInputVisited]);
 
+    // Change the username in db
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (username.length > 0 && usernameInfo === "") {

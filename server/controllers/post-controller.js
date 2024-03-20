@@ -52,6 +52,30 @@ async function getAllPosts(req, res) {
 }
 
 /**
+ * Gets all posts in the db by username.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+async function getAllPostsByName(req, res) {
+    try {
+        const username = req.params.username;
+        const q = `SELECT p.postid, p.username, p.created, c.ctype, c.content 
+        FROM post p JOIN content_of_post c
+        ON p.postid = c.postid
+        WHERE p.username = ?`;
+        const [result, fields] = await pool.execute(q, [username]);
+        if (result.length > 0) {
+            res.status(200).json({ success: true, data: result, message: "Found posts" });
+        } else {
+            res.status(404).json({ success: false, message: "Did not find any posts" });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, message: "Error getting posts" });
+    }
+}
+
+/**
  * Adds new post to db.
  * @param {*} req HTTP request
  * @param {*} res HTTP response
@@ -170,6 +194,7 @@ async function deletePost(req, res) {
 module.exports = {
     findPostById: findPostById,
     getAllPosts: getAllPosts,
+    getAllPostsByName: getAllPostsByName,
     addPost: addPost,
     updatePost: updatePost,
     deletePost: deletePost,

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import colors from 'styles/colors';
 import { NavLink } from 'react-router-dom';
 
+// Styles of the sidebar component
 export const SidebarWrapper = styled.div`
     min-width: 300px;
 `;

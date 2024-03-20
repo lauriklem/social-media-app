@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import colors from 'styles/colors';
 
+// Styles of the navigation bar in the app
 export const Navbar = styled.nav`
     width: 100%;
     display: flex;
@@ -20,7 +21,6 @@ export const Navbtn = styled(NavLink)`
     text-decoration: none;
     color: ${colors.gray};
     height: 100%;
-    width: 100px;
     justify-content: center;
     font-weight: bold;
     
