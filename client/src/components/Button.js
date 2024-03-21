@@ -21,3 +21,16 @@ export const Button = styled.button`
 		cursor: default;
 	}
 `;
+
+export const ButtonContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	gap: 16px;
+`;
+
+export const SmallButton = styled(Button)`
+	max-width: 100px;
+	font-size: medium;
+	padding: 8px;
+	flex-shrink: 0;
+`;

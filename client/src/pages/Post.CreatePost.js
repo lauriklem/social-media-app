@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Textarea, MainContent, TextareaWrapper, Title, Button, CenteredText, InfoLabel } from "components";
 
 // Page for creating a new post
-export default function NewPost({ cookies, serverUrl }) {
+export default function CreatePost({ cookies, serverUrl }) {
     // Text of the post
     const [postText, setPostText] = useState('');
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MainContent, Post, InfoLabel, CenteredText } from "components";
 
 // Component for listing posts
-export default function ListPosts({ cookies, serverUrl, username=null }) {
+export default function ListPosts({ cookies, serverUrl, username }) {
     // List of posts in db
     const [posts, setPosts] = useState([]);
 
@@ -14,7 +14,7 @@ export default function ListPosts({ cookies, serverUrl, username=null }) {
 
     // Map each post to Post component
     let postList = null;
-    if (username == null) {
+    if (!username) {
         postList = posts.map((p, index) => {
             return <Post
                 key={index + p.username}
@@ -22,16 +22,22 @@ export default function ListPosts({ cookies, serverUrl, username=null }) {
                 content={p.content}
                 created={p.created}
                 short={true}
+                postid={p.postid}
+                cookies={cookies}
+                serverUrl={serverUrl}
             />
         });
     } else {
         postList = posts.map((p, index) => {
             return <Post
                 key={index + p.username}
-                username=""
                 content={p.content}
                 created={p.created}
                 short={true}
+                buttons={true}
+                postid={p.postid}
+                cookies={cookies}
+                serverUrl={serverUrl}
             />
         });
     };

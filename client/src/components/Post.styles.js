@@ -17,6 +17,15 @@ export const PostTitle = styled.p`
 export const PostText = styled.p`
     margin-top: 10px;
     white-space: pre-wrap;
+    cursor: pointer;
+`;
+
+export const ShowMore = styled.p`
+    white-space: pre-wrap;
+    cursor: pointer;
+    &:hover{
+        color: ${colors.accent};
+	}
 `;
 
 export const TextLink = styled(NavLink)`

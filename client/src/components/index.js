@@ -1,6 +1,6 @@
 export { Input, InputLabel } from './Input';
 export { MainContent, SideBySide, Background } from './MainContent';
-export { Button } from './Button';
+export { Button, ButtonContainer, SmallButton } from './Button';
 export { Title } from './Title';
 export { FormWrapper, Form, InfoLabel, FormButton, CenteredText, CheckboxWrapper } from './Form';
 export { default as NavbarApp } from './NavbarApp';
