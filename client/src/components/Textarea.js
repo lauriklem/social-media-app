@@ -6,7 +6,7 @@ export const Textarea = styled.textarea`
     resize: none;
     padding: 12px 8px;
     border: 1px solid ${colors.gray};
-    border-radius: 4px;
+    background-color: ${colors.background};
     margin-bottom: 12px;
     width: 100%;
 

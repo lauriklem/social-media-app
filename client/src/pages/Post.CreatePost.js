@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Textarea, MainContent, TextareaWrapper, Title, Button, CenteredText, InfoLabel } from "components";
+import { Textarea, MainContent, TextareaWrapper, Title, Button, CenteredText, InfoLabel, PostContainer } from "components";
 
 // Page for creating a new post
 export default function CreatePost({ cookies, serverUrl }) {
@@ -54,18 +54,20 @@ export default function CreatePost({ cookies, serverUrl }) {
             <Title>Create new post</Title>
             {created ? <CenteredText>New post created.</CenteredText> :
                 creating ? <CenteredText>Creating post...</CenteredText> :
-                    <TextareaWrapper>
-                        <Textarea
-                            name="newpost"
-                            id="newpost"
-                            value={postText}
-                            onChange={handlePostChange}
-                            placeholder="Write your post here"
-                            rows="10"
-                        />
-                        <Button onClick={handleSubmit}>Send</Button>
-                        {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
-                    </TextareaWrapper>
+                    <PostContainer>
+                        <TextareaWrapper>
+                            <Textarea
+                                name="newpost"
+                                id="newpost"
+                                value={postText}
+                                onChange={handlePostChange}
+                                placeholder="Write your post here"
+                                rows="10"
+                            />
+                            <Button onClick={handleSubmit}>Send</Button>
+                            {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
+                        </TextareaWrapper>
+                    </PostContainer>
             }
         </MainContent>
     );

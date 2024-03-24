@@ -4,9 +4,10 @@ import { NavLink } from 'react-router-dom';
 
 // Styles of the post component
 export const PostContainer = styled.div`
-    padding: 10px;
-    margin: 8px 0;
-    border: 2px solid ${colors.accent};
+    padding: 12px;
+    margin: 12px 0;
+    background-color: ${colors.background};
+    box-shadow: 1px 1px 2px 2px ${colors.primary};
 `;
 
 export const PostTitle = styled.p`
@@ -15,17 +16,9 @@ export const PostTitle = styled.p`
 `;
 
 export const PostText = styled.p`
-    margin-top: 10px;
+    margin-top: 12px;
     white-space: pre-wrap;
     cursor: pointer;
-`;
-
-export const ShowMore = styled.p`
-    white-space: pre-wrap;
-    cursor: pointer;
-    &:hover{
-        color: ${colors.accent};
-	}
 `;
 
 export const TextLink = styled(NavLink)`

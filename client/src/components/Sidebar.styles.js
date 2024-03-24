@@ -10,6 +10,7 @@ export const SidebarWrapper = styled.div`
 export const LinkWrapper = styled.div`
     display: grid;
     margin: 50px 30px 0;
+    border-right: 2px solid ${colors.lightgray};
 `;
 
 export const SidebarLink = styled(NavLink)`

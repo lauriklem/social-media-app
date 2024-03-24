@@ -6,6 +6,9 @@ import EditPost from "./Post.EditPost";
 
 // Post component, shows information of one post
 export default function Post({ cookies, serverUrl, content, username, created, short, buttons, postid }) {
+    // Trim content that is longer than 300 characters
+    const trimLimit = 300;
+
     // Content of the post
     const [trimmedContent, setTrimmedContent] = useState("");
 
@@ -17,9 +20,6 @@ export default function Post({ cookies, serverUrl, content, username, created, s
 
     const [editing, setEditing] = useState(false);
 
-    // Formatted date
-    const formattedDate = formatDate(created);
-
     // Change the visible content if user clicks the text
     const handleTextClick = () => {
         setDoTrim(prev => !prev);
@@ -28,14 +28,25 @@ export default function Post({ cookies, serverUrl, content, username, created, s
     // Cancel editing
     const handleCancelEdit = () => {
         setEditing(false);
+    };
+
+    // Formatted date
+    const formattedDate = formatDate(created);
+
+    // Title text
+    let postTitle = null;
+    if (username) {
+        postTitle = <><UserLink><em>{username}</em></UserLink> on {formattedDate}</>;
+    } else {
+        postTitle = formattedDate;
     }
 
     // Change the visible content if user clicks the text
     useEffect(() => {
         let cnt = content;
-        if (cnt.length > 300) {
+        if (cnt.length > trimLimit) {
             if (doTrim) {
-                cnt = content.substring(0, 300) + "... (Click to read full post)";
+                cnt = content.substring(0, trimLimit) + "... (Click to see more)";
                 setHoverTitle("Show more");
             } else {
                 setHoverTitle("Show less");
@@ -57,14 +68,10 @@ export default function Post({ cookies, serverUrl, content, username, created, s
                 :
                 <>
                     <PostTitle>
-                        {
-                            username ?
-                                <><UserLink><em>{username}</em></UserLink> on </> : null
-                        }
-                        {formattedDate}
+                        {postTitle}
                     </PostTitle>
-                    <PostText onClick={handleTextClick} title={hoverTitle}>{trimmedContent}</PostText>
 
+                    <PostText onClick={handleTextClick} title={hoverTitle}>{trimmedContent}</PostText>
                     {
                         buttons && !editing ?
                             <ButtonContainer>
@@ -76,6 +83,5 @@ export default function Post({ cookies, serverUrl, content, username, created, s
                 </>
             }
         </PostContainer>
-
     );
 }

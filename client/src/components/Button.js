@@ -5,7 +5,6 @@ import colors from 'styles/colors';
 export const Button = styled.button`
 	padding: 16px;
 	font-size: large;
-	margin: 0 0 8px 0;
 	background: ${colors.primary};
 	color: ${colors.background};
 	border-radius: 4px;
@@ -24,7 +23,7 @@ export const Button = styled.button`
 
 export const ButtonContainer = styled.div`
 	display: flex;
-	justify-content: center;
+	justify-content: right;
 	gap: 16px;
 `;
 

@@ -53,21 +53,24 @@ export default function EditPost({ cookies, serverUrl, content, postid, handleCa
         <>
             {edited ? <CenteredText>Post edited successfully.</CenteredText> :
                 editing ? <CenteredText>Editing post...</CenteredText> :
-                    <TextareaWrapper>
-                        <Textarea
-                            name="newpost"
-                            id="newpost"
-                            value={postText}
-                            onChange={handlePostChange}
-                            placeholder="Write your post here"
-                            rows="10"
-                        />
+                    <>
+                        <TextareaWrapper>
+                            <Textarea
+                                name="newpost"
+                                id="newpost"
+                                value={postText}
+                                onChange={handlePostChange}
+                                placeholder="Write your post here"
+                                rows="10"
+                            />
+
+                            {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
+                        </TextareaWrapper>
                         <ButtonContainer>
                             <SmallButton onClick={handleCancel}>Cancel</SmallButton>
                             <SmallButton onClick={handleSubmit}>Accept</SmallButton>
                         </ButtonContainer>
-                        {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
-                    </TextareaWrapper>
+                    </>
             }
         </>
     );
