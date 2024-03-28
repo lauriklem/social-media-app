@@ -1,5 +1,5 @@
 const pool = require('./connection.js');
-const auth = require('../utils/authorization.js');
+const dataUtils = require('../utils/data-utils.js');
 
 /**
  * Finds one post by ID.
@@ -12,13 +12,15 @@ async function findPostById(req, res) {
         if (postid == null) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
-            const q = `SELECT p.postid, p.username, p.created, c.ctype, c.content 
+            const q = `SELECT p.postid, p.username, p.created, c.contentid, c.ctype, c.content 
             FROM post p JOIN content_of_post c
             ON p.postid = c.postid
-            WHERE p.postid = ?`;
+            WHERE p.postid = ?
+            ORDER BY c.contentid`;
             const [result, fields] = await pool.execute(q, [postid]);
             if (result.length > 0) {
-                res.status(200).json({ success: true, data: result, message: "Found post" });
+                const postArray = dataUtils.postsToArray(result);
+                res.status(200).json({ success: true, data: postArray, message: "Found post" });
             } else {
                 res.status(404).json({ success: false, message: "Did not find post" });
             }
@@ -36,12 +38,14 @@ async function findPostById(req, res) {
  */
 async function getAllPosts(req, res) {
     try {
-        const q = `SELECT p.postid, p.username, p.created, c.ctype, c.content 
+        const q = `SELECT p.postid, p.username, p.created, c.contentid, c.ctype, c.content 
         FROM post p JOIN content_of_post c
-        ON p.postid = c.postid`;
+        ON p.postid = c.postid
+        ORDER BY p.postid DESC, c.contentid`;
         const [result, fields] = await pool.execute(q);
         if (result.length > 0) {
-            res.status(200).json({ success: true, data: result, message: "Found posts" });
+            const postArray = dataUtils.postsToArray(result);
+            res.status(200).json({ success: true, data: postArray, message: "Found posts" });
         } else {
             res.status(404).json({ success: false, message: "Did not find any posts" });
         }
@@ -65,7 +69,8 @@ async function getAllPostsByName(req, res) {
         WHERE p.username = ?`;
         const [result, fields] = await pool.execute(q, [username]);
         if (result.length > 0) {
-            res.status(200).json({ success: true, data: result, message: "Found posts" });
+            const postArray = dataUtils.postsToArray(result);
+            res.status(200).json({ success: true, data: postArray, message: "Found posts" });
         } else {
             res.status(404).json({ success: false, message: "Did not find any posts" });
         }

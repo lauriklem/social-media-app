@@ -20,7 +20,21 @@ const post1 = {
             content: 'Second content'
         }
     ]
-}
+};
+
+const post2 = {
+    username: user1.username,
+    contentArray: [
+        {
+            ctype: 'text',
+            content: 'First content of second post'
+        },
+        {
+            ctype: 'text',
+            content: 'Second content of second post'
+        }
+    ]
+};
 
 beforeAll(async () => {
     // Add user and login with that user
@@ -43,8 +57,8 @@ test('Adding post', async () => {
     expect(response.body.success).toBe(true);
 });
 
-test('Adding post again', async () => {
-    const response = await request(app).post(postUrl).send(post1).set({ Authorization: auth });
+test('Adding another post', async () => {
+    const response = await request(app).post(postUrl).send(post2).set({ Authorization: auth });
     expect(response.statusCode).toBe(201);
     expect(response.body.success).toBe(true);
 });
@@ -67,7 +81,7 @@ test('Getting all posts', async () => {
     const response = await request(app).get(postUrl).set({ Authorization: auth });
     expect(response.statusCode).toBe(200);
     expect(response.body.data.length >= 2).toBe(true);
-    postid = response.body.data[0].postid;
+    postid = response.body.data[0].postid; // update postid
 });
 
 test('Getting post by id', async () => {
@@ -89,11 +103,11 @@ test('Updating content of post', async () => {
             postid: postid, 
             updatedArray: [{
                 ctype: 'text',
-                content: 'First updated'
+                content: `First updated content of post ${postid}`
             },
             {
                 ctype: 'text',
-                content: 'Second updated'
+                content: `Second updated content of post ${postid}`
             }]
         })
         .set({ Authorization: auth });
@@ -107,11 +121,11 @@ test('Adding more content to post', async () => {
             postid: postid, 
             newArray: [{
                 ctype: 'text',
-                content: 'First added'
+                content: `First added content of post ${postid}`
             },
             {
                 ctype: 'text',
-                content: 'Second added'
+                content: `Second added content of post ${postid}`
             }]
         })
         .set({ Authorization: auth });
@@ -122,9 +136,8 @@ test('Adding more content to post', async () => {
 test('Getting updated post', async () => {
     const response = await request(app).get(postUrl + `/${postid}`).set({ Authorization: auth });
     expect(response.statusCode).toBe(200);
-    console.log(response.body);
-    expect(response.body.data[0].content).toBe('First updated');
-    expect(response.body.data.length).toBe(4);
+    expect(response.body.data[0].contentArray[0].content).toMatch(/First updated/);
+    expect(response.body.data[0].contentArray.length).toBe(4);
 });
 
 test('Trying to update post with no content', async () => {
