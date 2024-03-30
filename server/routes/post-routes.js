@@ -14,7 +14,7 @@ router.route('/posts/:postid')
     .get(auth.authorizationMiddleware, postCtrl.findPostById)
     .delete(auth.authorizationMiddleware, postCtrl.deletePost)
 
-router.route('/posts/:username')
+router.route('/users/:username/posts')
     .get(auth.authorizationMiddleware, postCtrl.getAllPostsByName)
 
 router.route('/posts/:postid/comments')

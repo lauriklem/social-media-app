@@ -6,9 +6,9 @@ export const Textarea = styled.textarea`
     resize: none;
     padding: 12px 8px;
     border: 1px solid ${colors.gray};
-    background-color: ${colors.background};
     margin-bottom: 12px;
     width: 100%;
+    border-radius: 4px;
 
     &:focus{
         outline: 1px solid ${colors.primary};

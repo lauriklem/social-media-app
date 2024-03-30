@@ -2,7 +2,7 @@ export { Input, InputLabel } from './Input';
 export { MainContent, SideBySide, Background } from './MainContent';
 export { Button, ButtonContainer, SmallButton } from './Button';
 export { Title } from './Title';
-export { FormWrapper, Form, InfoLabel, FormButton, CenteredText, CheckboxWrapper } from './Form';
+export { FormWrapper, Form, InfoLabel, FormButton, CenteredText, CheckboxWrapper, PostForm } from './Form';
 export { default as NavbarApp } from './NavbarApp';
 export { default as Sidebar } from './Sidebar';
 export { default as Dialog } from './Dialog';

@@ -22,6 +22,7 @@ export const Button = styled.button`
 `;
 
 export const ButtonContainer = styled.div`
+	margin-top: 8px;
 	display: flex;
 	justify-content: right;
 	gap: 16px;

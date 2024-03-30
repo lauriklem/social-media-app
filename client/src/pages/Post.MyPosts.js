@@ -7,7 +7,7 @@ export default function MyPosts({ cookies, serverUrl }) {
         <ListPosts
             cookies={cookies}
             serverUrl={serverUrl}
-            username={cookies.username}
+            username={cookies['username']}
             buttons={true}
         />
     );

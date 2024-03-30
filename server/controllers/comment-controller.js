@@ -11,7 +11,7 @@ async function getCommentsByPostid(req, res) {
         if (postid == null) {
             res.status(400).json({ success: false, message: "Check input" });
         } else {
-            const q = `SELECT commentid, ctype, content, created
+            const q = `SELECT commentid, username, ctype, content, created
             FROM comment_of_post WHERE postid = ?`;
             const [result, fields] = await pool.execute(q, [postid]);
             if (result.length > 0) {

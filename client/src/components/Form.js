@@ -17,6 +17,10 @@ export const Form = styled.form`
     margin: 0 auto;
 `;
 
+export const PostForm = styled(Form)`
+    max-width: 100%;
+`;
+
 export const InfoLabel = styled.label`
     white-space: pre-wrap;
     color: ${colors.secondary};

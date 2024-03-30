@@ -9,6 +9,8 @@ export default function ListPosts({ cookies, serverUrl, username }) {
     // Is fetching posts or not
     const [fetching, setFetching] = useState(false);
 
+    const [info, setInfo] = useState("");
+
     // Error message
     const [errorInfo, setErrorInfo] = useState("");
 
@@ -19,7 +21,7 @@ export default function ListPosts({ cookies, serverUrl, username }) {
             return <Post
                 key={index + p.username}
                 username={p.username}
-                content={p.content}
+                contentArray={p.contentArray}
                 created={p.created}
                 short={true}
                 postid={p.postid}
@@ -31,7 +33,7 @@ export default function ListPosts({ cookies, serverUrl, username }) {
         postList = posts.map((p, index) => {
             return <Post
                 key={index + p.username}
-                content={p.content}
+                contentArray={p.contentArray}
                 created={p.created}
                 short={true}
                 buttons={true}
@@ -58,14 +60,14 @@ export default function ListPosts({ cookies, serverUrl, username }) {
                 if (username == null) {
                     url = serverUrl + "posts";
                 } else {
-                    url = serverUrl + `posts?username=${username}`;
+                    url = serverUrl + `users/${username}/posts`;
                 }
                 const result = await fetch(url, requestOptions);
                 const response = await result.json();
                 if (response.success) {
                     setPosts(response.data)
                 } else {
-                    setErrorInfo("Something went wrong while fetching posts");
+                    setInfo("You have not made any posts yet.");
                 }
             } catch (err) {
                 setErrorInfo("Something went wrong while fetching posts");
@@ -79,8 +81,13 @@ export default function ListPosts({ cookies, serverUrl, username }) {
     return (
         <MainContent>
             {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> :
-                fetching ? <CenteredText>Loading...</CenteredText> :
-                    postList
+                <>
+                    {
+                        info.length > 0 ? <CenteredText>You have not made any posts yet.</CenteredText> :
+                            fetching ? <CenteredText>Loading...</CenteredText> :
+                                postList
+                    }
+                </>
             }
         </MainContent>
     );

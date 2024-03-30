@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Textarea, MainContent, TextareaWrapper, Title, Button, CenteredText, InfoLabel, PostContainer } from "components";
+import { Textarea, MainContent, PostForm, FormWrapper, Title, FormButton, CenteredText, InfoLabel, Input, InputLabel, TextareaWrapper } from "components";
 
 // Page for creating a new post
 export default function CreatePost({ cookies, serverUrl }) {
+    // Title of the post
+    const [postTitle, setPostTitle] = useState('');
     // Text of the post
     const [postText, setPostText] = useState('');
 
@@ -13,13 +15,18 @@ export default function CreatePost({ cookies, serverUrl }) {
     // Error message
     const [errorInfo, setErrorInfo] = useState("");
 
+    const handleTitleChange = (e) => {
+        setPostTitle(e.target.value);
+    };
+
     const handlePostChange = (e) => {
         setPostText(e.target.value);
     };
 
     // Creates a new post to db
-    const handleSubmit = async () => {
-        if (postText.length > 0) {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (postText.length > 0 && postTitle.length > 0) {
             const requestOptions = {
                 method: 'POST',
                 headers: {
@@ -28,7 +35,10 @@ export default function CreatePost({ cookies, serverUrl }) {
                 },
                 body: JSON.stringify({
                     "username": cookies['username'],
-                    "contentArray": [{ "ctype": "text", "content": postText }]
+                    "contentArray": [
+                        { "ctype": "text", "content": postTitle },
+                        { "ctype": "text", "content": postText }
+                    ]
                 }),
             };
 
@@ -54,20 +64,34 @@ export default function CreatePost({ cookies, serverUrl }) {
             <Title>Create new post</Title>
             {created ? <CenteredText>New post created.</CenteredText> :
                 creating ? <CenteredText>Creating post...</CenteredText> :
-                    <PostContainer>
-                        <TextareaWrapper>
-                            <Textarea
-                                name="newpost"
-                                id="newpost"
-                                value={postText}
-                                onChange={handlePostChange}
-                                placeholder="Write your post here"
-                                rows="10"
+                    <FormWrapper>
+                        <PostForm action='' onSubmit={handleSubmit}>
+                            <InputLabel htmlFor="title">Title</InputLabel>
+                            <Input
+                                type='text'
+                                id='title'
+                                required
+                                value={postTitle}
+                                onChange={handleTitleChange}
+                                placeholder="Title of your post"
+                                maxLength='50'
                             />
-                            <Button onClick={handleSubmit}>Send</Button>
-                            {errorInfo.length > 0 ? <InfoLabel>{errorInfo}</InfoLabel> : null}
-                        </TextareaWrapper>
-                    </PostContainer>
+                            <InputLabel htmlFor="newpost">Post</InputLabel>
+                            <TextareaWrapper>
+                                <Textarea
+                                    name="newpost"
+                                    id="newpost"
+                                    required
+                                    value={postText}
+                                    onChange={handlePostChange}
+                                    placeholder="Write your post here"
+                                    rows="10"
+                                />
+                                <FormButton type="submit">Send</FormButton>
+                            </TextareaWrapper>
+                            {errorInfo.length > 0 && <InfoLabel>{errorInfo}</InfoLabel>}
+                        </PostForm>
+                    </FormWrapper>
             }
         </MainContent>
     );

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { PostContainer, PostText, PostTitle, UserLink } from "./Post.styles";
+import { PostContainer, PostText, PostTitle, UserLink, PostInfo, InfoContainer, ContentContainer, CommentsContainer } from "./Post.styles";
 import { formatDate } from "utils/dateUtils";
 import { SmallButton, ButtonContainer } from "./Button";
 import EditPost from "./Post.EditPost";
+import ListComments from "./Post.ListComments";
 
 // Post component, shows information of one post
-export default function Post({ cookies, serverUrl, content, username, created, short, buttons, postid }) {
+export default function Post({ cookies, serverUrl, contentArray, username, created, short, buttons, postid }) {
     // Trim content that is longer than 300 characters
     const trimLimit = 300;
 
     // Content of the post
+    const [postContent, setPostContent] = useState(contentArray);
     const [trimmedContent, setTrimmedContent] = useState("");
 
     // Show only part of text
@@ -18,11 +20,24 @@ export default function Post({ cookies, serverUrl, content, username, created, s
     // Shown title when hovering mouse over text
     const [hoverTitle, setHoverTitle] = useState("");
 
+    // User is editing post
     const [editing, setEditing] = useState(false);
+
+    // Show comments or not
+    const [showComments, setShowComments] = useState(false);
+
+    // Is fetching content or not
+    const [fetching, setFetching] = useState(false);
+
+    // Should fetch content again or not
+    const [doFetch, setDoFetch] = useState(false);
 
     // Change the visible content if user clicks the text
     const handleTextClick = () => {
         setDoTrim(prev => !prev);
+        if (username) {
+            setShowComments(prev => !prev);
+        }
     };
 
     // Cancel editing
@@ -34,26 +49,54 @@ export default function Post({ cookies, serverUrl, content, username, created, s
     const formattedDate = formatDate(created);
 
     // Title text
-    let postTitle = null;
+    let postInfo = null;
     if (username) {
-        postTitle = <><UserLink><em>{username}</em></UserLink> on {formattedDate}</>;
+        postInfo = <><UserLink>{username}</UserLink> {formattedDate}</>;
     } else {
-        postTitle = formattedDate;
+        postInfo = formattedDate;
     }
 
     // Change the visible content if user clicks the text
     useEffect(() => {
-        let cnt = content;
-        if (cnt.length > trimLimit) {
-            if (doTrim) {
-                cnt = content.substring(0, trimLimit) + "... (Click to see more)";
-                setHoverTitle("Show more");
-            } else {
-                setHoverTitle("Show less");
-            }
+        let cnt = postContent[1].content;
+        if (doTrim) {
+            cnt = cnt.substring(0, trimLimit) + "... \n(Click to see full post)";
+            setHoverTitle("Show more");
+        } else {
+            setHoverTitle("Show less");
         }
         setTrimmedContent(cnt);
-    }, [doTrim, content, hoverTitle]);
+    }, [doTrim, postContent, hoverTitle]);
+
+    // Fetch content again after editing
+    useEffect(() => {
+        const fetchPost = async () => {
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + cookies['login-token'],
+                }
+            };
+            try {
+                setFetching(true);
+                const result = await fetch(serverUrl + `posts/${postid}`, requestOptions);
+                const response = await result.json();
+                if (response.success) {
+                    setPostContent(response.data[0].contentArray);
+                }
+            } catch (err) {
+            } finally {
+                setFetching(false);
+            }
+        };
+        if (doFetch) {
+            fetchPost();
+            setDoFetch(false);
+            setEditing(false);
+            setDoTrim(short);
+        }
+    }, [doFetch, cookies, serverUrl, postid, short]);
 
     return (
         <PostContainer>
@@ -61,26 +104,41 @@ export default function Post({ cookies, serverUrl, content, username, created, s
                 <EditPost
                     cookies={cookies}
                     serverUrl={serverUrl}
-                    content={content}
+                    title={postContent[0].content}
+                    content={postContent[1].content}
                     postid={postid}
                     handleCancel={handleCancelEdit}
+                    setDoFetch={setDoFetch}
                 />
                 :
-                <>
-                    <PostTitle>
-                        {postTitle}
-                    </PostTitle>
+                fetching ? <PostText>Loading...</PostText> :
+                    <>
+                        <InfoContainer>
+                            <PostInfo>
+                                {postInfo}
+                            </PostInfo>
+                        </InfoContainer>
 
-                    <PostText onClick={handleTextClick} title={hoverTitle}>{trimmedContent}</PostText>
-                    {
-                        buttons && !editing ?
-                            <ButtonContainer>
-                                <SmallButton onClick={() => setEditing(true)}>Edit</SmallButton>
-                                <SmallButton>Delete</SmallButton>
-                            </ButtonContainer>
-                            : null
-                    }
-                </>
+                        <ContentContainer>
+                            <PostTitle>
+                                {postContent[0].content}
+                            </PostTitle>
+                            <PostText onClick={handleTextClick} title={hoverTitle}>{trimmedContent}</PostText>
+
+                            {
+                                buttons && !editing &&
+                                <ButtonContainer>
+                                    <SmallButton onClick={() => setEditing(true)}>Edit</SmallButton>
+                                    <SmallButton>Delete</SmallButton>
+                                </ButtonContainer>
+                            }
+
+                        </ContentContainer>
+                        {showComments &&
+                            <CommentsContainer>
+                                <ListComments cookies={cookies} serverUrl={serverUrl} postid={postid} />
+                            </CommentsContainer>}
+                    </>
             }
         </PostContainer>
     );
