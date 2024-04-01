@@ -9,3 +9,7 @@ export { default as Dialog } from './Dialog';
 export { Textarea, TextareaWrapper } from './Textarea';
 export { default as Post } from './Post';
 export { PostContainer } from './Post.styles';
+export { default as AddComment } from './Post.AddComment';
+export { default as Comment } from './Post.Comment';
+export { default as EditPost } from './Post.EditPost';
+export { default as ListPosts } from './Post.ListPosts';

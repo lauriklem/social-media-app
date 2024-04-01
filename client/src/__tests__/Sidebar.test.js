@@ -1,5 +1,5 @@
 import React from "react";
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { Sidebar } from "components";
 import { BrowserRouter } from 'react-router-dom'; // have to wrap links inside a router

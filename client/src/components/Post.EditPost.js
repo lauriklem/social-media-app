@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Textarea, TextareaWrapper, SmallButton, CenteredText, InfoLabel, ButtonContainer, Input, InputLabel, FormWrapper, PostForm, FormButton } from "components";
+import { Textarea, TextareaWrapper, SmallButton, CenteredText, InfoLabel, ButtonContainer, Input, InputLabel, FormWrapper, PostForm } from "components";
 import { ContentContainer } from "./Post.styles";
 
 // Page for creating a new post
@@ -86,7 +86,6 @@ export default function EditPost({ cookies, serverUrl, content, title, postid, h
                                         placeholder="Write your post here"
                                         rows="10"
                                     />
-                                    <FormButton type="submit">Send</FormButton>
                                 </TextareaWrapper>
                                 {errorInfo.length > 0 && <InfoLabel>{errorInfo}</InfoLabel>}
                             </PostForm>

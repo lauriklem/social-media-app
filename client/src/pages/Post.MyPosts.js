@@ -1,7 +1,7 @@
 import React from "react";
-import ListPosts from "./Post.ListPosts";
+import { ListPosts } from "components";
 
-// Home page of the app (after logging in), shows list of posts
+// Page for showing users own posts
 export default function MyPosts({ cookies, serverUrl }) {
     return (
         <ListPosts
