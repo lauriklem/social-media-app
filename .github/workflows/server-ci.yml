@@ -1,7 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Server CI
+name: Server-side build and tests
 
 on: [push]
 
@@ -41,6 +38,6 @@ jobs:
 
     - run: npm ci
     - run: npm run build --if-present
-    - run: cat $(find ../ -name socialMediaDB.sql) | mysql --protocol=tcp -u "$DB_USER" -p"$DB_PASSWORD" -h localhost -P 3306
+    - run: cat $(find ../db -name socialMediaDB.sql) | mysql --protocol=tcp -u "$DB_USER" -p"$DB_PASSWORD" -h localhost -P 3306
     - run: npm test
           
