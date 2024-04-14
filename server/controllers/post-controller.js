@@ -63,10 +63,11 @@ async function getAllPosts(req, res) {
 async function getAllPostsByName(req, res) {
     try {
         const username = req.params.username;
-        const q = `SELECT p.postid, p.username, p.created, c.ctype, c.content 
+        const q = `SELECT p.postid, p.username, p.created, c.contentid, c.ctype, c.content 
         FROM post p JOIN content_of_post c
         ON p.postid = c.postid
-        WHERE p.username = ?`;
+        WHERE p.username = ?
+        ORDER BY p.postid DESC, c.contentid`;
         const [result, fields] = await pool.execute(q, [username]);
         if (result.length > 0) {
             const postArray = dataUtils.postsToArray(result);

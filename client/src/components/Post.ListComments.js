@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Comment from "./Post.Comment";
 import AddComment from "./Post.AddComment";
-import { CommentsListTitle } from "./Post.Comment.styles";
+import { CommentsListTitle, CommentInfo } from "./Post.Comment.styles";
 
 export default function ListComments({ cookies, serverUrl, postid }) {
     const [comments, setComments] = useState([]);
@@ -48,8 +48,8 @@ export default function ListComments({ cookies, serverUrl, postid }) {
         <>
             <CommentsListTitle>Comments</CommentsListTitle>
             {
-                fetching ? <p>Loading comments...</p> :
-                    comments.length > 0 ? commentList : <p>Nobody has commented this post yet.</p>
+                fetching ? <CommentInfo>Loading comments...</CommentInfo> :
+                    comments.length > 0 ? commentList : <CommentInfo>Nobody has commented this post yet.</CommentInfo>
             }
             <AddComment cookies={cookies} serverUrl={serverUrl} postid={postid} setDoFetch={setDoFetch}/>
         </>

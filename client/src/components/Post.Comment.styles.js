@@ -17,3 +17,5 @@ export const CommentsListTitle = styled.p`
 export const CommentTitle = styled.p``;
 
 export const CommentContent = styled.p``;
+
+export const CommentInfo = styled.p``;

@@ -13,3 +13,4 @@ export { default as AddComment } from './Post.AddComment';
 export { default as Comment } from './Post.Comment';
 export { default as EditPost } from './Post.EditPost';
 export { default as ListPosts } from './Post.ListPosts';
+export { default as ListComments } from './Post.ListComments';
