@@ -48,6 +48,7 @@ export const checkNameAvailable = async (username, serverUrl) => {
         const response = await result.json();
         return !response.success;
     } catch (err) {
+        console.log(err);
         console.log("Error while checking username availability");
         return false;
     }

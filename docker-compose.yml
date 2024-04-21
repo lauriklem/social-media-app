@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    env_file:
+      - .env
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_PASSWORD}
+    restart: always
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./db/socialMediaDB.sql:/docker-entrypoint-initdb.d/socialMediaDB.sql
+
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    ports:
+      - 3001:3001
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+
+  client:
+    environment:
+      - WDS_SOCKET_PORT=0
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    ports:
+      - 3000:3000

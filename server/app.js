@@ -39,7 +39,7 @@ const postRoutes = require('./routes/post-routes.js');
 app.use(postRoutes);
 
 // Start server
-const server = app.listen(port, hostname, () => {
+const server = app.listen(port, () => {
     console.log(`Server for social-media-app is running at http://${hostname}:${port}/`);
 });
 

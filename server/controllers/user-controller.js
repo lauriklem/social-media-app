@@ -1,5 +1,5 @@
 const pool = require('./connection.js');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const auth = require('../utils/authorization.js');
 
 /**
